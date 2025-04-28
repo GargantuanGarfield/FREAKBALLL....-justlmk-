@@ -1,0 +1,267 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #121212;
+    font-family: Arial, sans-serif;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.3s ease;
+}
+
+.game-container {
+    position: relative;
+}
+
+.pool-table {
+    position: relative;
+    width: 650px;
+    height: 950px;
+    background-color: #0a6e0a; /* deeper felt green */
+    border: 20px solid #5d3a1a; /* richer wood color */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+}
+
+/* Cushions with better shaping and 3D effect */
+.cushion {
+    position: absolute;
+    background-color: #157f15; /* cushion green */
+}
+
+/* Top and bottom cushions */
+.cushion.top, .cushion.bottom {
+    left: 60px;
+    right: 60px;
+    height: 15px;
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.cushion.top {
+    top: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.cushion.bottom {
+    bottom: 0;
+    border-radius: 5px 5px 0 0;
+}
+
+/* Left and right cushions */
+.cushion.left, .cushion.right {
+    top: 60px;
+    bottom: 60px;
+    width: 15px;
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.cushion.left {
+    left: 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.cushion.right {
+    right: 0;
+    border-radius: 5px 0 0 5px;
+}
+
+/* Corner cushions with improved angles */
+.cushion.corner {
+    width: 70px;
+    height: 70px;
+    background-color: transparent;
+}
+
+.cushion.corner::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #157f15;
+    /* Applied shadow with border-radius to match shape */
+}
+
+.cushion.top-left {
+    top: 0;
+    left: 0;
+}
+.cushion.top-left::before {
+    border-radius: 0 0 100% 0;
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.cushion.top-right {
+    top: 0;
+    right: 0;
+}
+.cushion.top-right::before {
+    border-radius: 0 0 0 100%;
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.cushion.bottom-left {
+    bottom: 0;
+    left: 0;
+}
+.cushion.bottom-left::before {
+    border-radius: 0 100% 0 0;
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.cushion.bottom-right {
+    bottom: 0;
+    right: 0;
+}
+.cushion.bottom-right::before {
+    border-radius: 100% 0 0 0;
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.4);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Improved pockets */
+.pocket {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #000;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* Corner pockets - using pure circles positioned correctly */
+.pocket.corner {
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    border-radius: 50%;
+}
+
+.pocket.top-left {
+    top: -25px;
+    left: -25px;
+}
+
+.pocket.top-right {
+    top: -25px;
+    right: -25px;
+}
+
+.pocket.bottom-left {
+    bottom: -25px;
+    left: -25px;
+}
+
+.pocket.bottom-right {
+    bottom: -25px;
+    right: -25px;
+}
+
+/* Side pockets */
+.pocket.side {
+    width: 40px;
+    height: 30px;
+}
+
+.pocket.mid-left {
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+}
+
+.pocket.mid-right {
+    top: 50%;
+    right: -20px;
+    transform: translateY(-50%);
+}
+
+/* Table markings */
+.foot-spot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.head-spot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center-spot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Wood frame texture */
+.table-frame {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    border: 20px solid #5d3a1a;
+    border-radius: 40px;
+    background-color: transparent;
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Title */
+.game-title {
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.theme-switcher {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 10; /* Ensure it's on top */
+}
+
+.theme-button {
+    background-color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.theme-button:hover {
+    opacity: 0.8;
+}
