@@ -1,0 +1,33 @@
+MAIN
+
+start button/setup -- :3:3:3:3 on click{
+   -- after hit creates all the ball elements in the diamond and the cue ball element in the correct spot
+   -- Begin player loop (waits till a ball is hit in according to the rules.)
+   -- Player are assigned their suits (solid, stripes) -- Boolean isSolid -- 
+   -- game loop begins moment
+}
+
+Player loop (player#) {
+APPLY FREAKY POWERUPS HERE HERE
+	player gets their hit
+		separate method ig.....
+		if 8 ball -- checks 8ball? then returns result (hit again false)
+		if que ball -- hit again false
+		other ball -- checks suit and returns ball id to ball id[]
+				-- player.hitAgain? set to true if suit matches
+	return ball id[]	
+
+}
+
+Game loop {
+	player 1 loop
+	results calculated and ball count variable updated <- if ball ids include 8 ball, check if player has 8ball? if not, end.
+	if que ball in ballid[] then do something negative or smth idk man
+	loop if hitAgain?
+	player 2 loop
+	results calculated and ball count variable updated <- if ball ids include 8 ball, check if player has 8ball? if not, end.
+	loop if hitAgain?
+	when one ball count == 0 => 8ball? for player updated. <-- do this too	
+}
+
+End screen :3:3:3

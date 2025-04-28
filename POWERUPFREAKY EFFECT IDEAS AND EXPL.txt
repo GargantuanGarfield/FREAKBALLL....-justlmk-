@@ -1,0 +1,19 @@
+POWERUP/FREAKY EFFECT IDEAS AND EXPLANATIONS
+
+FREAKY EFFECTS{
+GAY MODE -- all balls textures are replaced by GAY so that you can't tell which is which
+GRAVITY WELLS -- one or two gravity wells spawn at random and effect MOVING balls
+BUMPER WALLS -- walls become bumpers for any ball, up to 5 bumps INCREASE BALL SPEED
+HARD MODE --  que ball is invisible for the turn OR projected path disappears
+STICKY MODE -- friction  to like .93-95
+SMALL POCKETS -- pocket size decreased by like 50%
+2% chance to switch player suits
+}
+
+POWERUPS{
+BOMB -- que ball explodes
+BLACK HOLE -- a small corona of black magic radiated from the cue ball on its first collision, sucking up any balls within it and deleting them.
+GUN -- initial velocity * 20 -- if you click on a player icon, they die and the other immediately wins
+BIFRUCATE THE BALL -- on ball hit, cue ball splits  in two 
+GHOST MODE -- other suits ball are intangible for your turn
+}

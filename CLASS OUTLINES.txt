@@ -1,0 +1,17 @@
+CLASS OUTLINES
+
+Player {
+isSolid?         bool
+8ballHit?       bool
+powerups[] String
+}
+
+Ball {
+wills stuff idk man
+
+suit  String
+id      int
+
+(cue ball id 0)
+(8 ball id 1)
+}
