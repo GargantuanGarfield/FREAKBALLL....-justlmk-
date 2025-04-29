@@ -1,5 +1,6 @@
 const canvas = document.getElementById('table');
 const ctx = canvas.getContext('2d');
+const playArea = document.getElementById('playArea');
 
 class ball {
     constructor(x, y, color, suit, id) {
@@ -145,7 +146,8 @@ function update() {
   balls.forEach(ball => {
     ball.x += ball.vx;
     ball.y += ball.vy;
-
+    const cushionMargin = 15; // matches `.cushion.left/right/top/bottom` offset in CSS
+    const cushionThickness = 1;
     ball.vx *= .98;
     ball.vy *= .98;
 
@@ -156,6 +158,24 @@ function update() {
     if (ball.x > canvas.width - ball.radius) { ball.x = canvas.width - ball.radius; ball.vx *= -1; }
     if (ball.y < ball.radius) { ball.y = ball.radius; ball.vy *= -1; }
     if (ball.y > canvas.height - ball.radius) { ball.y = canvas.height - ball.radius; ball.vy *= -1; }
+
+    if (ball.x < cushionMargin + ball.radius) {
+      ball.x = cushionMargin + ball.radius;
+      ball.vx *= -1;
+    }
+    if (ball.x > canvas.width - cushionMargin - ball.radius) {
+        ball.x = canvas.width - cushionMargin - ball.radius;
+        ball.vx *= -1;
+    }
+    if (ball.y < cushionMargin + ball.radius) {
+        ball.y = cushionMargin + ball.radius;
+        ball.vy *= -1;
+    }
+    if (ball.y > canvas.height - cushionMargin - ball.radius) {
+        ball.y = canvas.height - cushionMargin - ball.radius;
+        ball.vy *= -1;
+    }
+    
   });
 
   for (let i = 0; i < balls.length; i++) {
@@ -194,7 +214,7 @@ canvas.addEventListener('mousemove', (e) => {
     }
   });
 
-canvas.addEventListener('mouseup', (e) => {
+  playArea.addEventListener('mouseup', (e) => {
   if (balls[0].vx == 0 && balls[0].vy == 0){
     aiming = false;
     let dx = balls[0].x - e.offsetX;

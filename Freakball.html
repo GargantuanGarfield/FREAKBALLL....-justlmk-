@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FREAKBALLL....-justlmk-</title>
     <link rel="stylesheet" href="Freakball.css" />
+    <script src="physics.js" defer></script>
 </head>
 <body>
     <div class="game-container">
         <div class="table-frame"></div>
-        <div class="pool-table">
+        <div class="pool-table" id="playArea">
+            <canvas width="635px" height="950px" id="table" class="table"></canvas>
             <!-- Cushions -->
             <div class="cushion corner top-left"></div>
             <div class="cushion corner top-right"></div>
@@ -32,7 +34,9 @@
             <div class="foot-spot"></div>
             <div class="head-spot"></div>
             <div class="center-spot"></div>
+            
         </div>
+        
     </div>
 
     <div class="theme-switcher">

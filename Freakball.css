@@ -71,20 +71,6 @@ body {
 }
 
 /* Corner cushions with improved angles */
-.cushion.corner {
-    width: 70px;
-    height: 70px;
-    background-color: transparent;
-}
-
-.cushion.corner::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #157f15;
-    /* Applied shadow with border-radius to match shape */
-}
 
 .cushion.top-left {
     top: 0;
@@ -131,6 +117,7 @@ body {
     position: absolute;
     width: 40px;
     height: 40px;
+    z-index: 0;
     background-color: #000;
     border-radius: 50%;
     box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.8);
@@ -166,8 +153,8 @@ body {
 
 /* Side pockets */
 .pocket.side {
-    width: 40px;
-    height: 30px;
+    width: 45px;
+    height: 40px;
 }
 
 .pocket.mid-left {
@@ -264,4 +251,11 @@ body {
 
 .theme-button:hover {
     opacity: 0.8;
+}
+
+#table {
+    position: fixed;
+    width: 650px;
+    height: 950px;
+    z-index: 0; /* higher than the cushions */
 }
