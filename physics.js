@@ -1,6 +1,7 @@
 const canvas = document.getElementById('table');
 const ctx = canvas.getContext('2d');
 const playArea = document.getElementById('playArea');
+const event = new Event("STOP");
 
 class ball {
     constructor(x, y, color, suit, id) {
@@ -15,7 +16,7 @@ class ball {
     }
 }
 
-let balls = [
+export let balls = [
   new ball(500, 100, "white", "cue", 0),
   new ball(500, 200, "red", "solid", 1),
   new ball(500, 400, "orange", "solid", 2),
@@ -193,9 +194,15 @@ function update() {
   }
 }
 
+let hittable = true;
+
 function gameLoop() {
   update();
   draw();
+  if (balls[0].vx == 0 && balls[0].vy == 0 && hittable){
+    hittable = false;  
+    document.dispatchEvent(event);
+  }
   requestAnimationFrame(gameLoop);
 }
 
@@ -221,6 +228,7 @@ canvas.addEventListener('mousemove', (e) => {
     let dy = balls[0].y - e.offsetY;
     balls[0].vx = dx * 0.1;
     balls[0].vy = dy * 0.1;
+    hittable = true;
   }
 });
 
