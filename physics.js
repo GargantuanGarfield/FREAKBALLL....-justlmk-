@@ -15,6 +15,21 @@ class ball {
     }
 }
 
+class Powerup {
+  constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.size = 30; // size of the block
+  }
+
+  draw() {
+      ctx.fillStyle = "purple"; // PURPLE like you want!
+      ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+      ctx.strokeStyle = "black";
+      ctx.strokeRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+  }
+}
+
 let balls = [
   new ball(500, 100, "white", "cue", 0),
   new ball(500, 200, "red", "solid", 1),
@@ -23,6 +38,8 @@ let balls = [
 ];
 
 let aiming = false;
+let shotCount = 0; // Tracks the number of shots taken
+let powerups = []; // Array to store spawned powerups
 let startX, startY;
 
 function drawBall(ball) {
@@ -73,8 +90,16 @@ function drawProjectionLine(path, color) {
   ctx.closePath();
 }
 
+function spawnPowerup() {
+  let margin = 50; // Keeps it away from walls
+  let x = Math.random() * (canvas.width - 2 * margin) + margin;
+  let y = Math.random() * (canvas.height - 2 * margin) + margin;
+  powerups.push(new Powerup(x, y));
+}
+
 function draw() {
   drawTable();
+  powerups.forEach(p => p.draw());
   balls.forEach(drawBall);
 
   if (aiming) {
@@ -215,12 +240,21 @@ canvas.addEventListener('mousemove', (e) => {
   });
 
   playArea.addEventListener('mouseup', (e) => {
-  if (balls[0].vx == 0 && balls[0].vy == 0){
-    aiming = false;
-    let dx = balls[0].x - e.offsetX;
-    let dy = balls[0].y - e.offsetY;
-    balls[0].vx = dx * 0.1;
-    balls[0].vy = dy * 0.1;
+    if (balls[0].vx == 0 && balls[0].vy == 0){
+      aiming = false;
+      let dx = balls[0].x - e.offsetX;
+      let dy = balls[0].y - e.offsetY;
+      balls[0].vx = dx * 0.1;
+      balls[0].vy = dy * 0.1;
+
+      shotCount++;
+      
+      // TODO: Later insert player turn tracking here
+      // Example: if (currentPlayer === 'Player 1') { ... }
+
+      if (shotCount % 3 === 0) {
+          spawnPowerup();
+      }
   }
 });
 
