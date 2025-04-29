@@ -15,5 +15,5 @@ BOMB -- que ball explodes
 BLACK HOLE -- a small corona of black magic radiated from the cue ball on its first collision, sucking up any balls within it and deleting them.
 GUN -- initial velocity * 20 -- if you click on a player icon, they die and the other immediately wins
 BIFRUCATE THE BALL -- on ball hit, cue ball splits  in two 
-GHOST MODE -- other suits ball are intangible for your turn
+GHOST MODE -- other suits ball are intangible for your turn oh my gah
 }
