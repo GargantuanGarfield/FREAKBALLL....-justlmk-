@@ -13,6 +13,38 @@ class ball {
         this.vy = 0;
         this.radius = 10;
     }
+
+    collision(ball2) {
+        let dx = ball2.x - this.x;
+        let dy = ball2.y - this.y;
+        let distance = Math.hypot(dx, dy);
+        if (distance < this.radius + ball2.radius) {
+          let angle = Math.atan2(dy, dx);
+          let speed1 = Math.hypot(this.vx, this.vy);
+          let speed2 = Math.hypot(ball2.vx, ball2.vy);
+          let direction1 = Math.atan2(this.vy, this.vx);
+          let direction2 = Math.atan2(ball2.vy, ball2.vx);
+      
+          let vx1 = speed1 * Math.cos(direction1 - angle);
+          let vy1 = speed1 * Math.sin(direction1 - angle);
+          let vx2 = speed2 * Math.cos(direction2 - angle);
+          let vy2 = speed2 * Math.sin(direction2 - angle);
+      
+          let final_vx1 = vx2;
+          let final_vx2 = vx1;
+      
+          this.vx = Math.cos(angle) * final_vx1 + Math.cos(angle + Math.PI/2) * vy1;
+          this.vy = Math.sin(angle) * final_vx1 + Math.sin(angle + Math.PI/2) * vy1;
+          ball2.vx = Math.cos(angle) * final_vx2 + Math.cos(angle + Math.PI/2) * vy2;
+          ball2.vy = Math.sin(angle) * final_vx2 + Math.sin(angle + Math.PI/2) * vy2;
+      
+          let overlap = (this.radius + ball2.radius) - distance;
+          this.x -= overlap / 2 * (dx / distance);
+          this.y -= overlap / 2 * (dy / distance);
+          ball2.x += overlap / 2 * (dx / distance);
+          ball2.y += overlap / 2 * (dy / distance);
+        }
+      }
 }
 
 class Powerup {
@@ -31,10 +63,35 @@ class Powerup {
 }
 
 let balls = [
-  new ball(500, 100, "white", "cue", 0),
-  new ball(500, 200, "red", "solid", 1),
-  new ball(500, 400, "orange", "solid", 2),
-  new ball(700, 500, "blue", "solid", 3),
+// Cue ball - placed left of the rack
+new ball(318, 200, "white", "cue", 0),
+
+// Row 1 (tip)
+new ball(318, 600, "red", "solid", 1),
+
+// Row 2
+new ball(303, 630, "yellow", "stripe", 9),
+new ball(333, 630, "red", "solid", 2),
+
+// Row 3
+new ball(288, 660, "red", "solid", 3),
+new ball(318, 660, "black", "8-ball", 8),
+new ball(348, 660, "yellow", "stripe", 10),
+
+
+// Row 4
+new ball(273, 690, "yellow", "stripe", 11),
+new ball(303, 690, "red", "solid", 4),
+new ball(333, 690, "yellow", "stripe", 12),
+new ball(363, 690, "red", "solid", 5),
+
+// Row 5 (base)
+new ball(258, 720, "red", "solid", 6),
+new ball(288, 720, "yellow", "stripe", 13),
+new ball(318, 720, "red", "solid", 7),
+new ball(348, 720, "yellow", "stripe", 14),
+new ball(378, 720, "yellow", "stripe", 15)
+
 ];
 
 let aiming = false;
@@ -62,14 +119,32 @@ function simulateProjection(ball, steps = 30) {
   let vy = ball.vy;
   const path = [];
 
+  const cushionMargin = 20;
+
   for (let i = 0; i < steps; i++) {
     tempX += vx;
     tempY += vy;
     vx *= 0.98;
     vy *= 0.98;
 
-    if (tempX < ball.radius || tempX > canvas.width - ball.radius) vx *= -1;
-    if (tempY < ball.radius || tempY > canvas.height - ball.radius) vy *= -1;
+    if (tempX < ball.radius + cushionMargin) {
+      tempX = ball.radius + cushionMargin;
+      vx *= -1;
+    }
+    if (tempX > canvas.width - ball.radius - cushionMargin) {
+      tempX = canvas.width - ball.radius - cushionMargin;
+      vx *= -1;
+    }
+
+    // Bounce off top/bottom cushions
+    if (tempY < ball.radius + cushionMargin) {
+      tempY = ball.radius + cushionMargin;
+      vy *= -1;
+    }
+    if (tempY > canvas.height - ball.radius - cushionMargin) {
+      tempY = canvas.height - ball.radius - cushionMargin;
+      vy *= -1;
+    }
 
     path.push({ x: tempX, y: tempY });
   }
@@ -85,6 +160,7 @@ function drawProjectionLine(path, color) {
     ctx.lineTo(path[i].x, path[i].y);
   }
   ctx.strokeStyle = color;
+  ctx.lineWidth = 5;
   ctx.stroke();
   ctx.setLineDash([]);
   ctx.closePath();
@@ -103,12 +179,33 @@ function draw() {
   balls.forEach(drawBall);
 
   if (aiming) {
-    ctx.beginPath();
-    ctx.moveTo(balls[0].x, balls[0].y);
-    ctx.lineTo(startX, startY);
-    ctx.strokeStyle = 'white';
-    ctx.stroke();
-    ctx.closePath();
+    if (aiming) {
+        // Draw the pool stick shaft
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(balls[0].x, balls[0].y);
+        ctx.lineWidth = 8; // Thicker for pool stick
+        ctx.strokeStyle = '#A0522D'; // Sienna color for wood
+        ctx.stroke();
+        ctx.closePath();
+    
+        // Draw the pool stick tip
+        ctx.beginPath();
+        const dx = balls[0].x - startX;
+        const dy = balls[0].y - startY;
+        const dist = Math.hypot(dx, dy);
+        const tipLength = 10;
+        const unitX = dx / dist;
+        const unitY = dy / dist;
+    
+        ctx.moveTo(balls[0].x, balls[0].y);
+        ctx.lineTo(balls[0].x - unitX * tipLength, balls[0].y - unitY * tipLength);
+        ctx.lineWidth = 10; // Slightly wider tip
+        ctx.strokeStyle = '#2F4F4F'; // Dark Slate Gray tip
+        ctx.stroke();
+        ctx.closePath();
+    }
+    
 
     let dx = balls[0].x - startX;
     let dy = balls[0].y - startY;
@@ -135,88 +232,35 @@ function draw() {
   }
 }
 
-function checkCollision(ball1, ball2) {
-  let dx = ball2.x - ball1.x;
-  let dy = ball2.y - ball1.y;
-  let distance = Math.hypot(dx, dy);
-  if (distance < ball1.radius + ball2.radius) {
-    let angle = Math.atan2(dy, dx);
-    let speed1 = Math.hypot(ball1.vx, ball1.vy);
-    let speed2 = Math.hypot(ball2.vx, ball2.vy);
-    let direction1 = Math.atan2(ball1.vy, ball1.vx);
-    let direction2 = Math.atan2(ball2.vy, ball2.vx);
 
-    let vx1 = speed1 * Math.cos(direction1 - angle);
-    let vy1 = speed1 * Math.sin(direction1 - angle);
-    let vx2 = speed2 * Math.cos(direction2 - angle);
-    let vy2 = speed2 * Math.sin(direction2 - angle);
-
-    let final_vx1 = vx2;
-    let final_vx2 = vx1;
-
-    ball1.vx = Math.cos(angle) * final_vx1 + Math.cos(angle + Math.PI/2) * vy1;
-    ball1.vy = Math.sin(angle) * final_vx1 + Math.sin(angle + Math.PI/2) * vy1;
-    ball2.vx = Math.cos(angle) * final_vx2 + Math.cos(angle + Math.PI/2) * vy2;
-    ball2.vy = Math.sin(angle) * final_vx2 + Math.sin(angle + Math.PI/2) * vy2;
-
-    let overlap = (ball1.radius + ball2.radius) - distance;
-    ball1.x -= overlap / 2 * (dx / distance);
-    ball1.y -= overlap / 2 * (dy / distance);
-    ball2.x += overlap / 2 * (dx / distance);
-    ball2.y += overlap / 2 * (dy / distance);
-  }
-}
 
 function update() {
-  balls.forEach(ball => {
-    ball.x += ball.vx;
-    ball.y += ball.vy;
-    const cushionMargin = 15; // matches `.cushion.left/right/top/bottom` offset in CSS
-    const cushionThickness = 1;
-    ball.vx *= .98;
-    ball.vy *= .98;
-
-    if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
-    if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
-
-    if (ball.x < ball.radius) { ball.x = ball.radius; ball.vx *= -1; }
-    if (ball.x > canvas.width - ball.radius) { ball.x = canvas.width - ball.radius; ball.vx *= -1; }
-    if (ball.y < ball.radius) { ball.y = ball.radius; ball.vy *= -1; }
-    if (ball.y > canvas.height - ball.radius) { ball.y = canvas.height - ball.radius; ball.vy *= -1; }
-
-    if (ball.x < cushionMargin + ball.radius) {
-      ball.x = cushionMargin + ball.radius;
-      ball.vx *= -1;
-    }
-    if (ball.x > canvas.width - cushionMargin - ball.radius) {
-        ball.x = canvas.width - cushionMargin - ball.radius;
-        ball.vx *= -1;
-    }
-    if (ball.y < cushionMargin + ball.radius) {
-        ball.y = cushionMargin + ball.radius;
-        ball.vy *= -1;
-    }
-    if (ball.y > canvas.height - cushionMargin - ball.radius) {
-        ball.y = canvas.height - cushionMargin - ball.radius;
-        ball.vy *= -1;
-    }
-    
-  });
-
-  for (let i = 0; i < balls.length; i++) {
-    let ball1 = balls[i];
-    if (ball1.vx === 0 && ball1.vy === 0) continue;
-    for (let j = i + 1; j < balls.length; j++) {
-      let ball2 = balls[j];
-      if (ball2.vx === 0 && ball2.vy === 0 && ball1.vx === 0 && ball1.vy === 0) continue;
-      let dx = ball2.x - ball1.x;
-      let dy = ball2.y - ball1.y;
-      if (Math.abs(dx) < 25 && Math.abs(dy) < 25) {
-        checkCollision(ball1, ball2);
+    const substeps = 4; // increase this for better accuracy
+    for (let step = 0; step < substeps; step++) {
+      balls.forEach(ball => {
+        ball.x += ball.vx / substeps;
+        ball.y += ball.vy / substeps;
+        ball.vx *= 0.98 ** (1 / substeps);
+        ball.vy *= 0.98 ** (1 / substeps);
+  
+        if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
+        if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
+  
+        const cushionMargin = 20;
+        if (ball.x < ball.radius + cushionMargin) { ball.x = ball.radius + cushionMargin; ball.vx *= -1; }
+        if (ball.x > canvas.width - ball.radius - cushionMargin) { ball.x = canvas.width - ball.radius - cushionMargin; ball.vx *= -1; }
+        if (ball.y < ball.radius + cushionMargin) { ball.y = ball.radius + cushionMargin; ball.vy *= -1; }
+        if (ball.y > canvas.height - ball.radius - cushionMargin) { ball.y = canvas.height - ball.radius - cushionMargin; ball.vy *= -1; }
+      });
+  
+      for (let i = 0; i < balls.length; i++) {
+        for (let j = i + 1; j < balls.length; j++) {
+          balls[i].collision(balls[j]);
+        }
       }
     }
   }
-}
+  
 
 function gameLoop() {
   update();
@@ -224,7 +268,7 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-canvas.addEventListener('mousedown', (e) => {
+document.addEventListener('mousedown', (e) => {
   if (balls[0].vx == 0 && balls[0].vy == 0){
     aiming = true;
     startX = e.offsetX;
@@ -232,30 +276,22 @@ canvas.addEventListener('mousedown', (e) => {
   }
 });
 
-canvas.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', (e) => {
     if (aiming) {
       startX = e.offsetX;
       startY = e.offsetY;
     }
   });
 
-  playArea.addEventListener('mouseup', (e) => {
-    if (balls[0].vx == 0 && balls[0].vy == 0){
-      aiming = false;
-      let dx = balls[0].x - e.offsetX;
-      let dy = balls[0].y - e.offsetY;
-      balls[0].vx = dx * 0.1;
-      balls[0].vy = dy * 0.1;
-
-      shotCount++;
-      
-      // TODO: Later insert player turn tracking here
-      // Example: if (currentPlayer === 'Player 1') { ... }
-
-      if (shotCount % 3 === 0) {
-          spawnPowerup();
-      }
+  document.addEventListener('mouseup', (e) => {
+  if (balls[0].vx == 0 && balls[0].vy == 0){
+    aiming = false;
+    let dx = balls[0].x - e.offsetX;
+    let dy = balls[0].y - e.offsetY;
+    balls[0].vx = dx * 0.1;
+    balls[0].vy = dy * 0.1;
   }
 });
 
 gameLoop();
+
