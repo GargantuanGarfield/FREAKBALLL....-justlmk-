@@ -14,6 +14,14 @@ class ball {
         this.radius = 10;
     }
 
+    drawBall() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      }
+
     collision(ball2) {
         let dx = ball2.x - this.x;
         let dy = ball2.y - this.y;
@@ -46,6 +54,53 @@ class ball {
         }
       }
 }
+
+class pocket{
+
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
+        this.radius = 35;
+    }
+
+    pocketDraw(){
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.closePath();
+    }
+    pocketed(ball){
+        let distance = Math.sqrt(Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2))
+        if (distance < (ball.radius + this.radius)){
+            for (let i = 0; i < balls.length; i++){
+                if (balls[i].id == ball.id){
+                    console.log("Got it")
+                    balls.splice(i, 1)
+                    }
+                }
+            }
+            }
+        }
+        
+        
+    
+
+
+let pockets = [
+    // Top left
+    new pocket(0, 0),
+    // Top right
+    new pocket(635, 0),
+    // Middle left
+    new pocket(0, 475),
+    // middle right,
+    new pocket(635, 475),
+    // Bottom left
+    new pocket(0, 950),
+    // Bottom right
+    new pocket(635, 950)
+]
 
 let balls = [
 // Cue ball - placed left of the rack
@@ -82,17 +137,13 @@ new ball(378, 720, "yellow", "stripe", 15)
 let aiming = false;
 let startX, startY;
 
-function drawBall(ball) {
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-  ctx.fillStyle = ball.color;
-  ctx.fill();
-  ctx.closePath();
-}
 
 function drawTable() {
   ctx.fillStyle = '#0a5c1a';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  pockets.forEach(pocket =>{
+    pocket.pocketDraw();
+  })
 }
 
 function simulateProjection(ball, steps = 30) {
@@ -133,7 +184,9 @@ function drawProjectionLine(path, color) {
 
 function draw() {
   drawTable();
-  balls.forEach(drawBall);
+  balls.forEach(ball =>{
+    ball.drawBall()
+  });
 
   if (aiming) {
     if (aiming) {
@@ -214,6 +267,12 @@ function update() {
         for (let j = i + 1; j < balls.length; j++) {
           balls[i].collision(balls[j]);
         }
+        
+        for (let i = 0; i < pocket.length; i++){
+            for (let j = 0; j < balls.length; j++){
+                pockets[i].pocketed(balls[j]);
+            }
+        }
       }
     }
   }
@@ -228,23 +287,30 @@ function gameLoop() {
 document.addEventListener('mousedown', (e) => {
   if (balls[0].vx == 0 && balls[0].vy == 0){
     aiming = true;
-    startX = e.offsetX;
-    startY = e.offsetY;
+    const rect = canvas.getBoundingClientRect();
+    startX = e.clientX - rect.left;
+    startY = e.clientY - rect.top;
   }
 });
-
+ 
 document.addEventListener('mousemove', (e) => {
     if (aiming) {
-      startX = e.offsetX;
-      startY = e.offsetY;
+      const rect = canvas.getBoundingClientRect();
+      startX = e.clientX - rect.left;
+      startY = e.clientY - rect.top;
     }
   });
-
+ 
   document.addEventListener('mouseup', (e) => {
   if (balls[0].vx == 0 && balls[0].vy == 0){
     aiming = false;
-    let dx = balls[0].x - e.offsetX;
-    let dy = balls[0].y - e.offsetY;
+    const rect = canvas.getBoundingClientRect();
+    let mouseX = e.clientX - rect.left;
+    let mouseY = e.clientY - rect.top;
+   
+    let dx = balls[0].x - mouseX;
+    let dy = balls[0].y - mouseY;
+ 
     balls[0].vx = dx * 0.1;
     balls[0].vy = dy * 0.1;
   }
