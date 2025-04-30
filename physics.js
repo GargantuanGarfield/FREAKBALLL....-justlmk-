@@ -125,6 +125,7 @@ function drawProjectionLine(path, color) {
     ctx.lineTo(path[i].x, path[i].y);
   }
   ctx.strokeStyle = color;
+  ctx.lineWidth = 5;
   ctx.stroke();
   ctx.setLineDash([]);
   ctx.closePath();
@@ -135,12 +136,33 @@ function draw() {
   balls.forEach(drawBall);
 
   if (aiming) {
-    ctx.beginPath();
-    ctx.moveTo(balls[0].x, balls[0].y);
-    ctx.lineTo(startX, startY);
-    ctx.strokeStyle = 'white';
-    ctx.stroke();
-    ctx.closePath();
+    if (aiming) {
+        // Draw the pool stick shaft
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(balls[0].x, balls[0].y);
+        ctx.lineWidth = 8; // Thicker for pool stick
+        ctx.strokeStyle = '#A0522D'; // Sienna color for wood
+        ctx.stroke();
+        ctx.closePath();
+    
+        // Draw the pool stick tip
+        ctx.beginPath();
+        const dx = balls[0].x - startX;
+        const dy = balls[0].y - startY;
+        const dist = Math.hypot(dx, dy);
+        const tipLength = 10;
+        const unitX = dx / dist;
+        const unitY = dy / dist;
+    
+        ctx.moveTo(balls[0].x, balls[0].y);
+        ctx.lineTo(balls[0].x - unitX * tipLength, balls[0].y - unitY * tipLength);
+        ctx.lineWidth = 10; // Slightly wider tip
+        ctx.strokeStyle = '#2F4F4F'; // Dark Slate Gray tip
+        ctx.stroke();
+        ctx.closePath();
+    }
+    
 
     let dx = balls[0].x - startX;
     let dy = balls[0].y - startY;
@@ -203,7 +225,7 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-canvas.addEventListener('mousedown', (e) => {
+document.addEventListener('mousedown', (e) => {
   if (balls[0].vx == 0 && balls[0].vy == 0){
     aiming = true;
     startX = e.offsetX;
@@ -211,14 +233,14 @@ canvas.addEventListener('mousedown', (e) => {
   }
 });
 
-canvas.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', (e) => {
     if (aiming) {
       startX = e.offsetX;
       startY = e.offsetY;
     }
   });
 
-  playArea.addEventListener('mouseup', (e) => {
+  document.addEventListener('mouseup', (e) => {
   if (balls[0].vx == 0 && balls[0].vy == 0){
     aiming = false;
     let dx = balls[0].x - e.offsetX;
