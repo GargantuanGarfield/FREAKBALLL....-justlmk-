@@ -101,6 +101,82 @@ let pockets = [
     // Bottom right
     new pocket(635, 950)
 ]
+class Powerup {
+  constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.size = 30; // size of the block
+  }
+
+  draw() {
+      ctx.fillStyle = "purple"; // PURPLE like you want!
+      ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+      ctx.strokeStyle = "black";
+      ctx.strokeRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+  }
+}
+
+class pocket{
+
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
+        this.radius = 35;
+    }
+
+    pocketDraw(){
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.closePath();
+    }
+    pocketed(ball){
+        let distance = Math.sqrt(Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2))
+        if (distance < (ball.radius + this.radius)){
+            for (let i = 0; i < balls.length; i++){
+                if (balls[i].id == ball.id){
+                    console.log("Got it")
+                    balls.splice(i, 1)
+                    }
+                }
+            }
+            }
+        }
+        
+        
+    
+
+
+let pockets = [
+    // Top left
+    new pocket(0, 0),
+    // Top right
+    new pocket(635, 0),
+    // Middle left
+    new pocket(0, 475),
+    // middle right,
+    new pocket(635, 475),
+    // Bottom left
+    new pocket(0, 950),
+    // Bottom right
+    new pocket(635, 950)
+]
+
+class Powerup {
+  constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.size = 30; // size of the block
+  }
+
+  draw() {
+      ctx.fillStyle = "purple"; // PURPLE like you want!
+      ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+      ctx.strokeStyle = "black";
+      ctx.strokeRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+  }
+}
 
 let balls = [
 // Cue ball - placed left of the rack
@@ -135,6 +211,8 @@ new ball(378, 720, "yellow", "stripe", 15)
 ];
 
 let aiming = false;
+let shotCount = 0; // Tracks the number of shots taken
+let powerups = []; // Array to store spawned powerups
 let startX, startY;
 
 
@@ -153,14 +231,32 @@ function simulateProjection(ball, steps = 30) {
   let vy = ball.vy;
   const path = [];
 
+  const cushionMargin = 20;
+
   for (let i = 0; i < steps; i++) {
     tempX += vx;
     tempY += vy;
     vx *= 0.98;
     vy *= 0.98;
 
-    if (tempX < ball.radius || tempX > canvas.width - ball.radius) vx *= -1;
-    if (tempY < ball.radius || tempY > canvas.height - ball.radius) vy *= -1;
+    if (tempX < ball.radius + cushionMargin) {
+      tempX = ball.radius + cushionMargin;
+      vx *= -1;
+    }
+    if (tempX > canvas.width - ball.radius - cushionMargin) {
+      tempX = canvas.width - ball.radius - cushionMargin;
+      vx *= -1;
+    }
+
+    // Bounce off top/bottom cushions
+    if (tempY < ball.radius + cushionMargin) {
+      tempY = ball.radius + cushionMargin;
+      vy *= -1;
+    }
+    if (tempY > canvas.height - ball.radius - cushionMargin) {
+      tempY = canvas.height - ball.radius - cushionMargin;
+      vy *= -1;
+    }
 
     path.push({ x: tempX, y: tempY });
   }
@@ -182,11 +278,20 @@ function drawProjectionLine(path, color) {
   ctx.closePath();
 }
 
+function spawnPowerup() {
+  let margin = 50; // Keeps it away from walls
+  let x = Math.random() * (canvas.width - 2 * margin) + margin;
+  let y = Math.random() * (canvas.height - 2 * margin) + margin;
+  powerups.push(new Powerup(x, y));
+}
+
 function draw() {
   drawTable();
+  powerups.forEach(p => p.draw());
   balls.forEach(ball =>{
     ball.drawBall()
   });
+
 
   if (aiming) {
     if (aiming) {
@@ -256,7 +361,7 @@ function update() {
         if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
         if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
   
-        const cushionMargin = 15;
+        const cushionMargin = 20;
         if (ball.x < ball.radius + cushionMargin) { ball.x = ball.radius + cushionMargin; ball.vx *= -1; }
         if (ball.x > canvas.width - ball.radius - cushionMargin) { ball.x = canvas.width - ball.radius - cushionMargin; ball.vx *= -1; }
         if (ball.y < ball.radius + cushionMargin) { ball.y = ball.radius + cushionMargin; ball.vy *= -1; }
