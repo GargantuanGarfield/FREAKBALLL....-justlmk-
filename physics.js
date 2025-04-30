@@ -84,68 +84,9 @@ class pocket{
         }
         
         
-    
+  
 
 
-let pockets = [
-    // Top left
-    new pocket(0, 0),
-    // Top right
-    new pocket(635, 0),
-    // Middle left
-    new pocket(0, 475),
-    // middle right,
-    new pocket(635, 475),
-    // Bottom left
-    new pocket(0, 950),
-    // Bottom right
-    new pocket(635, 950)
-]
-class Powerup {
-  constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.size = 30; // size of the block
-  }
-
-  draw() {
-      ctx.fillStyle = "purple"; // PURPLE like you want!
-      ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
-      ctx.strokeStyle = "black";
-      ctx.strokeRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
-  }
-}
-
-class pocket{
-
-    constructor(x, y){
-        this.x = x;
-        this.y = y;
-        this.radius = 35;
-    }
-
-    pocketDraw(){
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "black";
-        ctx.fill();
-        ctx.closePath();
-    }
-    pocketed(ball){
-        let distance = Math.sqrt(Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2))
-        if (distance < (ball.radius + this.radius)){
-            for (let i = 0; i < balls.length; i++){
-                if (balls[i].id == ball.id){
-                    console.log("Got it")
-                    balls.splice(i, 1)
-                    }
-                }
-            }
-            }
-        }
-        
-        
-    
 
 
 let pockets = [
@@ -361,7 +302,7 @@ function update() {
         if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
         if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
   
-        const cushionMargin = 20;
+        const cushionMargin = 15;
         if (ball.x < ball.radius + cushionMargin) { ball.x = ball.radius + cushionMargin; ball.vx *= -1; }
         if (ball.x > canvas.width - ball.radius - cushionMargin) { ball.x = canvas.width - ball.radius - cushionMargin; ball.vx *= -1; }
         if (ball.y < ball.radius + cushionMargin) { ball.y = ball.radius + cushionMargin; ball.vy *= -1; }
