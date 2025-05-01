@@ -89,24 +89,31 @@ class pocket{
         ctx.fill();
         ctx.closePath();
     }
+    resetCueBall(){
+      balls[0].x = 318;
+      balls[0].y = 200;
+      balls[0].vx = 0;
+      balls[0].vy = 0;
+    }
     pocketed(ball){
         let distance = Math.sqrt(Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2))
         if (distance < (ball.radius + this.radius)){
+          if (ball.suit == "cue"){
+            this.resetCueBall();
+          } else {
             for (let i = 0; i < balls.length; i++){
                 if (balls[i].id == ball.id){
                     console.log("Got it")
                     balls.splice(i, 1)
                     }
                 }
+            }}
             }
-            }
+
+     
         }
-        
-        
+
   
-
-
-
 
 let pockets = [
     // Top left
@@ -348,7 +355,7 @@ function update() {
           balls[i].collision(balls[j]);
         }
         
-        for (let i = 0; i < pocket.length; i++){
+        for (let i = 0; i < pockets.length; i++){
             for (let j = 0; j < balls.length; j++){
                 pockets[i].pocketed(balls[j]);
             }
