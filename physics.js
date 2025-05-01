@@ -1,14 +1,15 @@
 const canvas = document.getElementById('table');
 const ctx = canvas.getContext('2d');
 const playArea = document.getElementById('playArea');
+const event = new Event("STOP");
 
 // take this code before updating will's changes
 const collisionSounds = [
-  hit1 = new Audio('/sounds/BallHit.mp3'),
-  hit2 = new Audio('/sounds/BallHit2.mp3'),
-  hit3 = new Audio('/sounds/BallHit3.mp3'),
-  hit4 = new Audio('/sounds/BallHit4.mp3'),
-  hit5 = new Audio('/sounds/BallHit5.mp3')
+  new Audio("/sounds/BallHit.mp3"),
+  new Audio('/sounds/BallHit2.mp3'),
+  new Audio('/sounds/BallHit3.mp3'),
+  new Audio('/sounds/BallHit4.mp3'),
+  new Audio('/sounds/BallHit5.mp3')
 ];
 
 // take this code before updating will's changes
@@ -74,6 +75,8 @@ class ball {
       }
 }
 
+let pocketed = [];
+
 class pocket{
 
     constructor(x, y){
@@ -104,6 +107,7 @@ class pocket{
             for (let i = 0; i < balls.length; i++){
                 if (balls[i].id == ball.id){
                     console.log("Got it")
+                    pocketed.push(ball.suit)
                     balls.splice(i, 1)
                     }
                 }
@@ -159,7 +163,7 @@ function edgeSound() {
   edgeSounds.play();
 }
 
-let balls = [
+export let balls = [
 // Cue ball - placed left of the rack
 new ball(318, 200, "white", "cue", 0),
 
@@ -192,7 +196,6 @@ new ball(378, 720, "yellow", "stripe", 15)
 ];
 
 let aiming = false;
-let shotCount = 0; // Tracks the number of shots taken
 let powerups = []; // Array to store spawned powerups
 let startX, startY;
 
@@ -365,9 +368,15 @@ function update() {
   }
   // I will blow up
 
+let hittable = true;
+
 function gameLoop() {
   update();
   draw();
+  if (balls[0].vx == 0 && balls[0].vy == 0 && hittable){
+    hittable = false;
+    document.dispatchEvent(event);
+  }
   requestAnimationFrame(gameLoop);
 }
 
@@ -400,8 +409,10 @@ document.addEventListener('mousemove', (e) => {
  
     balls[0].vx = dx * 0.1;
     balls[0].vy = dy * 0.1;
+    hittable = true;
   }
 });
 
 gameLoop();
 
+export {pocketed}
