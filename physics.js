@@ -356,7 +356,7 @@ function update() {
       }
     }
   }
-  
+  // I will blow up
 
 function gameLoop() {
   update();
