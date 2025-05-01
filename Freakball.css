@@ -5,7 +5,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: "imgs/Bar.png";
+    background-image: url("imgs/Bar.png");
     font-family: Arial, sans-serif;
     position: relative;
     background-size: cover;

@@ -7,6 +7,7 @@ const hellAudio = new Audio('/sounds/PitsOfHellMusic.mp3');
 const interimAudio = new Audio('/sounds/Bartender.mp3');
 let currentPlayingAudio = null;
 
+
 function playBackgroundAudio() {
     const clickedButton = this.id;
 
@@ -35,6 +36,9 @@ function playBackgroundAudio() {
     }
 
 }
+
+
+
 
 if (bar) bar.addEventListener('click', playBackgroundAudio);
 if (hell) hell.addEventListener('click', playBackgroundAudio);
