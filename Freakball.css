@@ -16,16 +16,17 @@ body {
 .overlay {
     position: fixed;
     background-color: gray;
-    opacity: .55;
+    opacity: .8;
     border: #000;
-    border-width: 7px;
+    border-width: 20x;
+    color: indianred;
 }
 
 .win {
-    align-self: center;
+    align-items: center;
     position: fixed;
-    width: device-width;
-    height: device-height;
+    width: 2000px;
+    height: 1080px;
     z-index: 1;
 }
 

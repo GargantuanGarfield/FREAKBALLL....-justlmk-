@@ -2,8 +2,8 @@ import {balls} from "./physics.js"
 import {pocketed} from "./physics.js"
 import {Player} from "./player.js"
 
-let REMAINING_SOLIDS = 2
-let REMAINING_STRIPES =  0
+let REMAINING_SOLIDS = 0
+let REMAINING_STRIPES =  1
 
 
 let player1 = new Player(1, "bals", "[none]", "[none]", "[none]")
@@ -54,10 +54,20 @@ function player(player, turnNum){
     } else {
         console.log("PLAYER" + player.number + " TURN")
         pocketed.forEach(ball => {
+            let div = document.getElementById("win")
+            let h1 = div.querySelector("h1")
+            let video = div.querySelector("video")
             if (ball == "8-ball" && !player.finalBall){
-                //game endn sequence i guess idek breh 👅👅👅👅👅👅
+                if (player.num%2 == 0){
+                    h1.textContent = "PLAYER 1 WINS !!!! AYAYAYYAYYYYY"
+                } else {
+                    h1.textContent = "PLAYER 2 WINS !!!! AYAYAYYAYYYYY"
+                }
+                video.playbackRate = 4
+                div.classList.remove("hidden")
             } else if (ball == "8-ball"){
-                // win momnet
+                h1.textContent = "PLAYER " + player.number + " WINS !!!! AYAYAYYAYYYYY"
+                div.classList.remove("hidden")
             }
         })
 

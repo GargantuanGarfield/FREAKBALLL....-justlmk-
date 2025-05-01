@@ -168,30 +168,30 @@ export let balls = [
 new ball(318, 200, "white", "cue", 0),
 
 // Row 1 (tip)
-new ball(318, 600, "red", "solid", 1),
+//new ball(318, 600, "red", "solid", 1),
 
 // Row 2
 new ball(303, 630, "yellow", "stripe", 9),
-new ball(333, 630, "red", "solid", 2),
+//new ball(333, 630, "red", "solid", 2),
 
 // Row 3
-new ball(288, 660, "red", "solid", 3),
+//new ball(288, 660, "red", "solid", 3),
 new ball(318, 660, "black", "8-ball", 8),
-new ball(348, 660, "yellow", "stripe", 10),
+//new ball(348, 660, "yellow", "stripe", 10),
 
 
 // Row 4
-new ball(273, 690, "yellow", "stripe", 11),
-new ball(303, 690, "red", "solid", 4),
-new ball(333, 690, "yellow", "stripe", 12),
-new ball(363, 690, "red", "solid", 5),
+//new ball(273, 690, "yellow", "stripe", 11),
+//new ball(303, 690, "red", "solid", 4),
+//new ball(333, 690, "yellow", "stripe", 12),
+//new ball(363, 690, "red", "solid", 5),
 
 // Row 5 (base)
-new ball(258, 720, "red", "solid", 6),
-new ball(288, 720, "yellow", "stripe", 13),
-new ball(318, 720, "red", "solid", 7),
-new ball(348, 720, "yellow", "stripe", 14),
-new ball(378, 720, "yellow", "stripe", 15)
+//new ball(258, 720, "red", "solid", 6),
+//new ball(288, 720, "yellow", "stripe", 13),
+//new ball(318, 720, "red", "solid", 7),
+//new ball(348, 720, "yellow", "stripe", 14),
+//new ball(378, 720, "yellow", "stripe", 15)
 
 ];
 

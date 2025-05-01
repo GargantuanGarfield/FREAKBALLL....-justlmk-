@@ -33,9 +33,7 @@ export class Player{
     }
 
     checkFinal(balls){
-        console.log("IM GONNACO EMME")
         if (balls == 0){
-            console.log('EMMEME')
             this.finalBall = true
         }
     }
