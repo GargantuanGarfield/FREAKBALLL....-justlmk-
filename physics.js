@@ -170,6 +170,7 @@ function edgeSound() {
 
 function pocketSound() {
   pocketHit = new Audio('/sounds/PocketHit.mp3');
+  pocketHit.volume = 0.5;
   pocketHit.play();
 }
 
