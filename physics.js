@@ -12,12 +12,15 @@ const collisionSounds = [
   new Audio('/sounds/BallHit5.mp3')
 ];
 
+
+
 // take this code before updating will's changes
 collisionSounds[0].volume = 0.5;
 collisionSounds[4].volume = 0.5;
 
 // take this code before updating will's changes
 let edgeSounds;
+let pocketHit;
 
 class ball {
     constructor(x, y, color, suit, id) {
@@ -102,10 +105,12 @@ class pocket{
         let distance = Math.sqrt(Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2))
         if (distance < (ball.radius + this.radius)){
           if (ball.suit == "cue"){
+            pocketSound();
             this.resetCueBall();
           } else {
             for (let i = 0; i < balls.length; i++){
                 if (balls[i].id == ball.id){
+                    pocketSound();
                     console.log("Got it")
                     pocketed.push(ball.suit)
                     balls.splice(i, 1)
@@ -161,6 +166,11 @@ function edgeSound() {
   edgeSounds = new Audio('/sounds/BallHitEdge.mp3');
   edgeSounds.volume = 0.3;
   edgeSounds.play();
+}
+
+function pocketSound() {
+  pocketHit = new Audio('/sounds/PocketHit.mp3');
+  pocketHit.play();
 }
 
 export let balls = [
