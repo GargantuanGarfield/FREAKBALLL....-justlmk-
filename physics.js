@@ -332,15 +332,24 @@ function draw() {
 }
 
 
-
 function update() {
+    const maxSpeed = 65
     const substeps = 4; // increase this for better accuracy
     for (let step = 0; step < substeps; step++) {
       balls.forEach(ball => {
+        if (ball.vx > maxSpeed){
+          ball.vx = maxSpeed
+        }
+        if (ball.vy > maxSpeed){
+          ball.vy = maxSpeed;
+        }
         ball.x += ball.vx / substeps;
         ball.y += ball.vy / substeps;
         ball.vx *= 0.98 ** (1 / substeps);
         ball.vy *= 0.98 ** (1 / substeps);
+
+        
+        
   
         if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
         if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
