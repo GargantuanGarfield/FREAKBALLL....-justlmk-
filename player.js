@@ -1,5 +1,6 @@
 export class Player{
-    constructor(isSolid, finalBall, powerup1, powerup2, powerup3){
+    constructor(number, isSolid, finalBall, powerup1, powerup2, powerup3){
+        this.number = number
         this.isSolid = isSolid;
         this.finalBall = finalBall;
         this.powerup1 = powerup1;
