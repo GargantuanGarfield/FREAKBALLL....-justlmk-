@@ -2,12 +2,12 @@ import {balls} from "./physics.js"
 import {pocketed} from "./physics.js"
 import {Player} from "./player.js"
 
-let REMAINING_SOLIDS = 7
-let REMAINING_STRIPES =  7
+let REMAINING_SOLIDS = 2
+let REMAINING_STRIPES =  0
 
 
-let player1 = new Player(1, "bals", false, "[none]", "[none]", "[none]")
-let player2 = new Player(2, "bals", false, "[none]", "[none]", "[none]")
+let player1 = new Player(1, "bals", "[none]", "[none]", "[none]")
+let player2 = new Player(2, "bals", "[none]", "[none]", "[none]")
 
 document.addEventListener("STOP", playTurn)
 
@@ -15,12 +15,12 @@ let turnNum = 0
 let playAgain = false;
 
 function playTurn() {
-    do {
-        turnNum++;
-        const currentPlayer = (turnNum % 2 === 0) ? player2 : player1;
-        player(currentPlayer, turnNum);
-        // playAgain should be set by `player()` or other logic
-    } while (playAgain);
+    turnNum++;
+    const currentPlayer = (turnNum % 2 === 0) ? player2 : player1;
+    player(currentPlayer, turnNum);
+    if (playAgain){
+        turnNum--
+    }
 }
 
 function player(player, turnNum){
@@ -54,8 +54,10 @@ function player(player, turnNum){
     } else {
         console.log("PLAYER" + player.number + " TURN")
         pocketed.forEach(ball => {
-            if (ball == "8-ball" && player.finalBall){
+            if (ball == "8-ball" && !player.finalBall){
                 //game endn sequence i guess idek breh 👅👅👅👅👅👅
+            } else if (ball == "8-ball"){
+                // win momnet
             }
         })
 
@@ -105,8 +107,14 @@ function player(player, turnNum){
                 playAgain = true;
             }
         })
-
-        
+        console.log(REMAINING_SOLIDS)
+        console.log(player.isSolid)
+        if (player.isSolid){
+            player.checkFinal(REMAINING_SOLIDS)
+        } else {
+            player.checkFinal(REMAINING_STRIPES)
+        }
+        console.log(player.finalBall)
     }
 
 

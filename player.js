@@ -1,8 +1,8 @@
 export class Player{
-    constructor(number, isSolid, finalBall, powerup1, powerup2, powerup3){
+    constructor(number, isSolid, powerup1, powerup2, powerup3){
         this.number = number
         this.isSolid = isSolid;
-        this.finalBall = finalBall;
+        this.finalBall = false;
         this.powerup1 = powerup1;
         this.powerup2 = powerup2;
         this.powerup3 = powerup3;
@@ -29,6 +29,14 @@ export class Player{
             case 1 : return this.powerup1;
             case 2 : return this.powerup2;
             case 3 : return this.powerup3;
+        }
+    }
+
+    checkFinal(balls){
+        console.log("IM GONNACO EMME")
+        if (balls == 0){
+            console.log('EMMEME')
+            this.finalBall = true
         }
     }
 }
