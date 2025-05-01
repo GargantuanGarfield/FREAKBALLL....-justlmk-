@@ -2,6 +2,22 @@ const canvas = document.getElementById('table');
 const ctx = canvas.getContext('2d');
 const playArea = document.getElementById('playArea');
 
+// take this code before updating will's changes
+const collisionSounds = [
+  hit1 = new Audio('/sounds/BallHit.mp3'),
+  hit2 = new Audio('/sounds/BallHit2.mp3'),
+  hit3 = new Audio('/sounds/BallHit3.mp3'),
+  hit4 = new Audio('/sounds/BallHit4.mp3'),
+  hit5 = new Audio('/sounds/BallHit5.mp3')
+];
+
+// take this code before updating will's changes
+collisionSounds[0].volume = 0.5;
+collisionSounds[4].volume = 0.5;
+
+// take this code before updating will's changes
+let edgeSounds;
+
 class ball {
     constructor(x, y, color, suit, id) {
         this.x = x;
@@ -51,6 +67,9 @@ class ball {
           this.y -= overlap / 2 * (dy / distance);
           ball2.x += overlap / 2 * (dx / distance);
           ball2.y += overlap / 2 * (dy / distance);
+
+          // take this code before updating will's changes
+          collisionSound();
         }
       }
 }
@@ -116,7 +135,21 @@ class Powerup {
       ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
       ctx.strokeStyle = "black";
       ctx.strokeRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
-  }
+  }}
+  
+// take this code before updating will's changes
+function collisionSound() {
+  let randomIndex = Math.floor(Math.random() * collisionSounds.length);
+  let sound = collisionSounds[randomIndex];
+  sound.currentTime = 0;
+  sound.play();
+}
+
+// take this code before updating will's changes
+function edgeSound() {
+  edgeSounds = new Audio('/sounds/BallHitEdge.mp3');
+  edgeSounds.volume = 0.3;
+  edgeSounds.play();
 }
 
 let balls = [
@@ -303,10 +336,11 @@ function update() {
         if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
   
         const cushionMargin = 15;
-        if (ball.x < ball.radius + cushionMargin) { ball.x = ball.radius + cushionMargin; ball.vx *= -1; }
-        if (ball.x > canvas.width - ball.radius - cushionMargin) { ball.x = canvas.width - ball.radius - cushionMargin; ball.vx *= -1; }
-        if (ball.y < ball.radius + cushionMargin) { ball.y = ball.radius + cushionMargin; ball.vy *= -1; }
-        if (ball.y > canvas.height - ball.radius - cushionMargin) { ball.y = canvas.height - ball.radius - cushionMargin; ball.vy *= -1; }
+        // take this code before updating will's changes
+        if (ball.x < ball.radius + cushionMargin) { ball.x = ball.radius + cushionMargin; ball.vx *= -1; edgeSound();}
+        if (ball.x > canvas.width - ball.radius - cushionMargin) { ball.x = canvas.width - ball.radius - cushionMargin; ball.vx *= -1; edgeSound();}
+        if (ball.y < ball.radius + cushionMargin) { ball.y = ball.radius + cushionMargin; ball.vy *= -1; edgeSound();}
+        if (ball.y > canvas.height - ball.radius - cushionMargin) { ball.y = canvas.height - ball.radius - cushionMargin; ball.vy *= -1; edgeSound();}
       });
   
       for (let i = 0; i < balls.length; i++) {
