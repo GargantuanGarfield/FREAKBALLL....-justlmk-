@@ -246,3 +246,33 @@ body {
     height: 950px;
     z-index: 0; /* higher than the cushions */
 }
+.player-avatar {
+    position: absolute;
+    width: 475px;
+    height: 475px;
+    background-color: rgba(255, 255, 255, 0.05); /* Placeholder background */
+    border-radius: 20px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    border: 3px solid white;
+    z-index: 10;
+}
+
+/* Player 1 on the far left */
+.player1 {
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Player 2 on the far right */
+.player2 {
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.player-avatar.active-turn {
+    border: 5px solid red;
+    box-shadow: 0 0 20px red;
+}
