@@ -8,29 +8,30 @@
     <script src="physics.js" type="module" defer></script>
     <script src="player.js" type="module" defer></script>
     <script src="gameloop.js" type="module" defer></script>
+    <script src="backgroundAudio.js" defer></script>
 </head>
 <body>
     <div class="game-container">
         <div class="table-frame"></div>
         <div class="pool-table" id="playArea">
+            <div>
             <canvas width="635px" height="950px" id="table" class="table"></canvas>
+            </div>
             <!-- Cushions -->
-            <div class="cushion corner top-left"></div>
-            <div class="cushion corner top-right"></div>
-            <div class="cushion corner bottom-left"></div>
-            <div class="cushion corner bottom-right"></div>
             <div class="cushion top"></div>
             <div class="cushion bottom"></div>
-            <div class="cushion left"></div>
-            <div class="cushion right"></div>
-
+            <div class="cushion left top-left"></div>
+            <div class="cushion left bottom-left"></div>
+            <div class="cushion right top-right"></div>
+            <div class="cushion right bottom-right"></div>
             <!-- Pockets -->
+             <!--
             <div class="pocket corner top-left"></div>
             <div class="pocket corner top-right"></div>
             <div class="pocket corner bottom-left"></div>
             <div class="pocket corner bottom-right"></div>
             <div class="pocket side mid-left"></div>
-            <div class="pocket side mid-right"></div>
+            <div class="pocket side mid-right"></div>-->
             
             <!-- Table markings -->
             <div class="foot-spot"></div>
@@ -42,9 +43,9 @@
     </div>
 
     <div class="theme-switcher">
-        <button class="theme-button" onclick="setBodyBackground('imgs/Bar.png')">Bar</button>
-        <button class="theme-button" onclick="setBodyBackground('imgs/Hell.gif')">Hell</button>
-        <button class="theme-button" onclick="setBodyBackground('imgs/Interim.jpg')">Interim</button>
+        <button class="theme-button" id = "bar" onclick="setBodyBackground('imgs/Bar.png')">Bar</button>
+        <button class="theme-button" id = "hell" onclick="setBodyBackground('imgs/Hell.gif')">Hell</button>
+        <button class="theme-button" id = "interim" onclick="setBodyBackground('imgs/Interim.jpg')">Interim</button>
     </div>
 
     <script>
