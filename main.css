@@ -12,8 +12,8 @@ body {
     width: 100%;
     background-color: #f0f0f0;
     padding: 10px 0;
-    border-top: 5px ridge #ff00ff;
-    border-bottom: 5px ridge #cac8c8;
+    border-top: 5px dotted #ff00ff;
+    border-bottom: 5px dotted #c8cac8;
     margin-bottom: 0;
     text-align: center;
 }
@@ -200,16 +200,8 @@ body {
     margin: 10px 0;
 }
 
-.sparkle {
-    position: absolute;
-    pointer-events: none;
-    width: 20px;
-    height: 20px;
-    background-image: url('/api/placeholder/20/20');
-}
-
 .funky {
     background-color: #f0f0f0;
-    border-top: 4px ridge #ff0000;
-    border-bottom: 4px ridge #ff0000;
+    border-top: 2px ridge #ff0000;
+    border-bottom: 2px ridge #ff0000;
 }
