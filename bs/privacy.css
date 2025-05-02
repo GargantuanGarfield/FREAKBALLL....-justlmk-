@@ -1,0 +1,42 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    color: #000;
+    margin: 0;
+    padding: 2rem;
+    line-height: 1.6;
+    
+  }
+
+  h1, h2 {
+    color: #000000;
+    text-align: center;
+  }
+
+  p {
+    max-width: 800px;
+    margin: 1rem auto;
+    
+  }
+
+  .section {
+    padding: 1rem;
+    margin: 1.5rem auto;
+    max-width: 900px;
+    border-radius: 10px;
+    
+  }
+
+  .footer {
+    text-align: center;
+    font-size: 0.9em;
+    color: #333;
+    margin-top: 3rem;
+  }
+
+  a {
+    color: #ff6600;
+  }
+
+  a:hover {
+    color: #ff0000;
+  }

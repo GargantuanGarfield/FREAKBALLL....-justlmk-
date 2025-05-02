@@ -5,21 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css" />
     <title>FREAKBALL</title>
+    <style>
+        
+    </style>
 </head>
 <body>
-
     <audio src="sounds/whucanitbenaw.mp3" autoplay loop>
         balls
     </audio>
 
-    <div style="position: fixed; bottom: 10px; right: 10px; text-align: center;">
-        <small style="display: block; color: rgb(0, 0, 0);">HUBERT APPROVED</small>
-        <img src="imgs/cat-pool.gif" alt="Cat in Pool" style="max-width: 150px; max-height: 150px;">
+    <div class="cat-corner">
+        <small>HUBERT APPROVED</small>
+        <img src="imgs/cat-pool.gif" alt="Cat in Pool" style="max-width: 150px; max-height: 150px;" draggable="false">
     </div>
 
-    <div style="width: 100%; background-color: #f0f0f0; padding: 20px; border: 2px solid #ffffff;">
-        <h1 id="rainbow" style="font-family: 'Comic Sans MS', cursive; text-shadow: 2px 2px #000;">Welcome to FREAKBALL!</h1>
-        <marquee style="font-family: 'Comic Sans MS', cursive; color: #0000ff; font-size: 1.5rem;" loop="true" scrollamount=11.5>
+    <div id="header">
+        <h1 id="rainbow">Welcome to FREAKBALL!</h1>
+        <marquee class="funky" style="font-family: 'Comic Sans MS', cursive; color: #0000ff; font-size: 1.5rem;" loop="true" scrollamount=11.5>
             WELCOME TO THE FREAKIEST... FREAKY BALL OF ALL TIME!
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             HIT THE PLAY BUTTON NOW!
@@ -29,56 +31,127 @@
             GET READY FOR THE BEST 8 BALL GAME OF YOUR LIFE!
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             THIS GAME IS FOR THE REAL FREAKS ONLY!!!!
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            IM GONNA KILL YOU #ABRAM #KISSALLMEN
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            I HAVE A BOMB STRAPPED TO MY CHEST!! GARU THERES A GOMBOM
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            HAVE FUN WITH YOUR FRIENDS IN FREAKBALL!
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            MAKE SURE TO LEAVE A LIKE! FOLLOW US ON TELEGRAM! AND 关注插件作者
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            感謝參與 FREAKBALL 我是同性戀，賽義德懷孕了，哎呀哎呀
         </marquee>
     </div>
+
+    <div class="main-container">
+        <div class="left-column">
+            <div class="section">
+                <div class="section-header">EPIC BALL ACTION!!!</div>
+                <div class="section-content">
+                    <img src="/imgs/gaygay.jpg" draggable="false">
+                    <p>IT'S JUST LIKE THE REAL THING! Experience the coolest pool game EVER!!!</p>
+                    <p style="font-size: 0.8em; color: #666;"><i>*may cause extreme rage and anger in individuals</i></p>
+                </div>
+            </div>
+            
+            <div class="section" style="margin-left: 30px; width: 85%;">
+                <div class="section-header">CHALLENGE YOUR FRIENDS!</div>
+                <div class="section-content">
+                    <img src="/imgs/gaygay.jpg" draggable="false">
+                    <p>MAKE YOUR FRIENDS YOUR ENEMIES!!! Show them how much better you are at pool and how much they SUCK at pool!!! Show them just how awful they are!! Make them suffer!!!!</p>
+                    <p style="font-size: 0.8em; color: #666; text-align: center;"><i>*if you don't have anyone to play with then TOUGH LUCK BUCKO</i></p>
+                    <p style="color: red; font-weight: bold; font-size: 1.2em;" class="blink">MAKE THEM PAY!!! MAKE THEM SUFFER!!! KILL THEM!!!</p>
+                </div>
+            </div>
+            
+            <div class="section" style="width: 75%; margin-left: 15px;">
+                <div class="section-header">IDFK</div>
+                <div class="section-content">
+                    <img src="imgs/gaygay.jpg" draggable="false" style="max-width: 100px;">
+                    <p>IM GAY</p>
+                    <marquee direction="up" height="50" scrollamount="2" loop="true">IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY IM GAY </marquee>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-column">
+            <div class="section" style="width: 90%; margin-left: 5%;">
+                <div class="section-header">WHAT IS FREAKBALL?</div>
+                <div class="section-content">
+                    <img src="imgs/gaygay.jpg"style="float: left; margin-right: 15px;" draggable="false">
+                    <p><br><br>FREAKBALL is the <b>FREAKIEST</b> 8-BALL experience EVER!!!!!<br><br>Do you get bored sometimes? Do you hate those other STUPID 8-ball games online because of how they're not FREAKY enough? Play <b>FREAKBALL</b> to get the ultimate FREAKY 8-ball experience... YOU WONT REGRET IT!!!!!</p>
+                    <p style="clear: both; text-align: center;"><span class="blink" style="color: red; font-weight: bold; font-size: 1.2em;">PLEASE PLAY IM IN SEVERE DEBT</span></p>
+                </div>
+            </div>
+            
+            <div class="section" style="width: 80%; margin-left: 15%;">
+                <div class="section-header">UNLOCK FREAKY POWERUPS!</div>
+                <div class="section-content">
+                    <img src="imgs/gaygay.jpg" style="float: right; margin-left: 15px; max-width: 200px;" draggable="false" >
+                    <p><br><br>Play rounds to get <b>CRAZY</b> powerups!!<br><br>NO OTHER 8-BALL GAME HAS THESE POWER UPS!!! Normal 8-ball is just so boring. In Freakball... <b>YOU</b> take the control. Do you want the ability to completely obliterate all the balls on the table? Or turn all of them gay? Your powerup possibilies are <b>endless</b> in FREAKBALL.</p>
+                    <p style="font-size: 0.8em; color: #666; clear: both; text-align: right;">*DISCLAIMER: they are not endless</p>
+                    <marquee direction="right" scrollamount="3" style="color: #ff00ff; font-weight: bold;">UNLEASH YOUR WRATH AND FURY</marquee>
+                </div>
+            </div>
+            
+            <div class="section" style="width: 95%; margin-left: 3%;">
+                <div class="section-header" style="color: #ffffff; background-color: #990099;">SPONSORED</div>
+                <div class="section-content">
+                        <div>
+                            <video autoplay src="imgs/testvid.mp4" draggable="false" style="width: 100%; max-width: 325px; border: 2px solid #000;" loop muted></video>
+                            <p class="blink" style="color: red; font-weight: bold; font-size: 1.3em; text-align: center; text-shadow: 1px 1px #000;">CLICK PLAY BELOW TO EXPERIENCE THE MADNESS!</p>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
     
+    <div style="clear: both; text-align: center; padding: 20px; background: linear-gradient(to right, #00aa00, #00ff00, #00aa00); border-top: 8px ridge #00ff00; border-bottom: 8px ridge #00ff00;">
+        <button id="play-button" onclick="play()">PLAY NOW NOW NOW!!</button>
+    </div>
+
+    <div style="text-align: center; padding: 15px; background-color: #ffcc00; border-top: 3px dotted #ff6600; border-bottom: 3px dotted #ff6600;">
+        <table align="center" cellpadding="5" cellspacing="10" style="width: 80%; margin: 0 auto; background-color: rgba(255, 255, 255, 0.5);">
+            <tr>
+                <td align="center" width="25%"><img src="imgs/whitehouse.jpg" alt="Award 1" style="border: 2px solid gold; max-width: 100px;"><br>"THIS IS THE BEST POOL GAME IN YEARS!"</td>
+                <td align="center" width="25%"><img src="imgs/igjn.png" alt="Award 2" style="border: 2px solid rgb(255, 0, 0); max-width: 100px;"><br>"THIS IS SO ADDICTIVE!"</td>
+                <td align="center" width="25%"><img src="imgs/publix.png" alt="Award 3" style="border: 2px solid #d8d5d5; max-width: 100px;"><br>"EVEN BETTER THAN GAMBLING!"</td>
+                <td align="center" width="25%"><img src="imgs/gaygay.jpg" alt="Award 4" style="border: 2px solid rgb(0, 0, 0); max-width: 100px;"><br>"meow meow meoww mreeeowwwww"</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="footer">
+        <p>© 2025 Big Freaks LLC. All rights reserved. | <a href="/bs/privacy.html" style="color: #ff6600;">Privacy Policy</a> | <a href="/bs/tos.html" style="color: #ff6600;">Terms of Service</a> | <a href="#" style="color: #ff6600;">Contact Us</a></p>
+        <p style="font-size: 0.8em;">Best viewed with Internet Explorer 6.0 or Netscape Navigator</p>
+        <div style="margin-top: 10px; font-size: 0.7em;">
+            <a href="#" style="color: #00ff00; margin: 0 5px;">HOME</a> |
+            <a href="#" style="color: #00ff00; margin: 0 5px;">FORUM</a> |
+            <a href="#" style="color: #00ff00; margin: 0 5px;">DOWNLOADS</a> |
+            <a href="#" style="color: #00ff00; margin: 0 5px;">WEBRING</a> |
+            <a href="#" style="color: #00ff00; margin: 0 5px;">GUESTBOOK</a>
+        </div>
+    </div>
+
     <script>
+        // Rainbow text effect
         const rainbowText = document.getElementById('rainbow');
         let hue = 0;
         setInterval(() => {
             rainbowText.style.color = `hsl(${hue}, 100%, 50%)`;
             hue = (hue + 2) % 360;
         }, 30);
-    </script>
-
-    <div style="width: 100%; padding: 20px; text-align: center; font-family: 'Comic Sans MS', cursive; color: #000;">
-        <h2 style="color: #ff6600; text-shadow: 1px 1px #000;">EPIC BALL ACTION!!!!</h2>
-        <img src="imgs/gaygay.jpg" style="width: 100%; max-width: 200px; border: 2px solid #000;">
-        <p>It's just like the real thing!</p>
-    </div>
-
-    <div style="width: 100%; padding: 20px; text-align: center; font-family: 'Comic Sans MS', cursive; color: #000;">
-        <h2 style="color: #00cc00; text-shadow: 1px 1px #000;">CHALLENGE YOUR FRIENDS!!!!</h2>
-        <img src="imgs/gaygay.jpg" style="width: 100%; max-width: 200px; border: 2px solid #000;">
-        <p>MAKE THEM PAY!!! MAKE THEM SUFFER!!! KILL THEM!!!</p>
-    </div>
-
-    <div style="width: 100%; padding: 20px; text-align: center; font-family: 'Comic Sans MS', cursive; color: #000;">
-        <h2 style="color: #ff0066; text-shadow: 1px 1px #000;">IDFK</h2>
-        <img src="imgs/gaygay.jpg" style="width: 100%; max-width: 200px; border: 2px solid #000;">
-        <p>IM GAY</p>
-    </div>
-
-    <button onclick="play()">PLAY NOW NOW NOW</button>
-
-    <div style="width: 100%; background-color: #000; color: #fff; padding: 10px; text-align: center; font-family: 'Comic Sans MS', cursive;">
-        <p>© 2025 Big Freaks LLC. All rights reserved.</p>
-    </div>
-
-    <script>
+        
+        // Play button function
         function play() {
             window.location.href = "Freakball.html";
         }
+        
+        // Create sparkles on mouse move (very 2000s)
+        document.addEventListener('mousemove', function(e) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = (e.pageX - 10) + 'px';
+            sparkle.style.top = (e.pageY - 10) + 'px';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1000);
+        });
     </script>
 </body>
 </html>
