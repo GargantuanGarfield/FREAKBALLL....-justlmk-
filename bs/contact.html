@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="contact.css" />
+  <title>Contact Us | FREAKBALL</title>
+</head>
+<body>
+
+    <audio src="../sounds/playwitme.mp3" autoplay loop>
+        balls
+    </audio>
+
+  <h1>CONTACT US</h1>
+  <div class="form-container">
+    <form id="freakForm">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" placeholder="Joe Biden" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="you@freakball.net" required>
+
+      <label for="message">Your Message</label>
+      <textarea id="message" name="message" rows="6" placeholder="hai :3" required></textarea>
+
+      <button type="submit">SUBMIT</button>
+    </form>
+    <div class="thanks-message" id="thanksMessage">
+        awoooga awoooga THANKS for SUBMITTIGN
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2025 Big Freaks LLC. All rights reserved. <a href="../main.html">Back to FREAKBALL</a></p>
+  </div>
+
+  <script>
+    document.getElementById('freakForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // stop actual form submission
+      document.getElementById('freakForm').style.display = 'none';
+      document.getElementById('thanksMessage').style.display = 'block';
+      const yay = new Audio('../sounds/Yay.mp3');
+      yay.play();
+    });
+  </script>
+</body>
+</html>
