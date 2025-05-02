@@ -18,7 +18,7 @@ body {
     animation: rainbow 6s linear infinite;
     padding: 15px;
     background-color: rgba(255, 255, 255, 0.7);
-    border-top: 5px dotted #ff00ff;
+    border-top: 5px ridge #ff00ff;
     border-bottom: 5px ridge #00ff00;
   }
   
