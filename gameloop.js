@@ -9,6 +9,20 @@ let REMAINING_STRIPES =  7
 let player1 = new Player(1, "bals", false, "[none]", "[none]", "[none]")
 let player2 = new Player(2, "bals", false, "[none]", "[none]", "[none]")
 
+function updatePlayerHighlight(currentPlayer) {
+    const avatar1 = document.querySelector('.player1');
+    const avatar2 = document.querySelector('.player2');
+    
+    avatar1.classList.remove('active-turn');
+    avatar2.classList.remove('active-turn');
+
+    if (currentPlayer.number === 1) {
+        avatar1.classList.add('active-turn');
+    } else {
+        avatar2.classList.add('active-turn');
+    }
+}
+
 document.addEventListener("STOP", playTurn)
 
 let turnNum = 0
@@ -25,6 +39,8 @@ function playTurn() {
 
 function player(player, turnNum){
     playAgain = false;
+
+    updatePlayerHighlight(player);
 
     if (turnNum == 1 && pocketed.length > 0){
         // if there one ball then assaign suit otherwi uhh then dont,, ig
