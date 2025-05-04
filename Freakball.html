@@ -11,10 +11,12 @@
     <script src="backgroundAudio.js" defer></script>
 </head>
 <body>
-    <div class="win hidden">
-        <div class="overlay">
-            <h1>Win!</h1>
+    <div class="win hidden" id="win">
+        <div class="overlay win">
+            <h1 style="text-align: center; align-content: center;" style="opacity: 100;">Win!</h1>
+            <video src="/imgs/victory.mp4" style="-webkit-transform: scaleX(3); -moz-transform: scaleX(3);" class="win" autoplay loop></video>
         </div>
+        <img src="/imgs/confetti.gif" draggable="false" class="win">
     </div>
     <div class="game-container">
         <div class="table-frame"></div>

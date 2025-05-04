@@ -2,12 +2,12 @@ import {balls} from "./physics.js"
 import {pocketed} from "./physics.js"
 import {Player} from "./player.js"
 
-let REMAINING_SOLIDS = 7
-let REMAINING_STRIPES =  7
+let REMAINING_SOLIDS = 0
+let REMAINING_STRIPES =  1
 
 
-let player1 = new Player(1, "bals", false, "[none]", "[none]", "[none]")
-let player2 = new Player(2, "bals", false, "[none]", "[none]", "[none]")
+let player1 = new Player(1, "bals", "[none]", "[none]", "[none]")
+let player2 = new Player(2, "bals", "[none]", "[none]", "[none]")
 
 function updatePlayerHighlight(currentPlayer) {
     const avatar1 = document.querySelector('.player1');
@@ -29,12 +29,12 @@ let turnNum = 0
 let playAgain = false;
 
 function playTurn() {
-    do {
-        turnNum++;
-        const currentPlayer = (turnNum % 2 === 0) ? player2 : player1;
-        player(currentPlayer, turnNum);
-        // playAgain should be set by `player()` or other logic
-    } while (playAgain);
+    turnNum++;
+    const currentPlayer = (turnNum % 2 === 0) ? player2 : player1;
+    player(currentPlayer, turnNum);
+    if (playAgain){
+        turnNum--
+    }
 }
 
 function player(player, turnNum){
@@ -70,8 +70,20 @@ function player(player, turnNum){
     } else {
         console.log("PLAYER" + player.number + " TURN")
         pocketed.forEach(ball => {
-            if (ball == "8-ball" && player.finalBall){
-                //game endn sequence i guess idek breh 👅👅👅👅👅👅
+            let div = document.getElementById("win")
+            let h1 = div.querySelector("h1")
+            let video = div.querySelector("video")
+            if (ball == "8-ball" && !player.finalBall){
+                if (player.num%2 == 0){
+                    h1.textContent = "PLAYER 1 WINS !!!! AYAYAYYAYYYYY"
+                } else {
+                    h1.textContent = "PLAYER 2 WINS !!!! AYAYAYYAYYYYY"
+                }
+                video.playbackRate = 4
+                div.classList.remove("hidden")
+            } else if (ball == "8-ball"){
+                h1.textContent = "PLAYER " + player.number + " WINS !!!! AYAYAYYAYYYYY"
+                div.classList.remove("hidden")
             }
         })
 
@@ -121,8 +133,14 @@ function player(player, turnNum){
                 playAgain = true;
             }
         })
-
-        
+        console.log(REMAINING_SOLIDS)
+        console.log(player.isSolid)
+        if (player.isSolid){
+            player.checkFinal(REMAINING_SOLIDS)
+        } else {
+            player.checkFinal(REMAINING_STRIPES)
+        }
+        console.log(player.finalBall)
     }
 
 
