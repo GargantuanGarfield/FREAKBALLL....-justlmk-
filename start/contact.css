@@ -165,7 +165,6 @@ body {
     pointer-events: none;
     width: 20px;
     height: 20px;
-    background-image: url('../imgs/sparkle.gif');
   }
   
   #freakForm {
@@ -173,7 +172,6 @@ body {
     z-index: 2;
   }
   
-  /* Add 2000s style animated gif border */
   .form-container::after {
     content: "";
     position: absolute;
@@ -181,7 +179,6 @@ body {
     left: -20px;
     right: -20px;
     bottom: -20px;
-    background: url('../imgs/flame.gif');
     background-repeat: repeat;
     z-index: -1;
     border-radius: 20px;

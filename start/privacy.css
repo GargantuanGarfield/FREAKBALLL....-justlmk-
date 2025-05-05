@@ -5,7 +5,6 @@ body {
   padding: 0;
   line-height: 1.6;
   background-color: #a2d2f1;
-  background-image: url('../imgs/bg-tile.gif');
   background-repeat: repeat;
 }
 
@@ -79,7 +78,6 @@ p {
 
 .section li {
   margin-bottom: 8px;
-  list-style-image: url('../imgs/bullet.gif');
   padding-left: 10px;
 }
 
