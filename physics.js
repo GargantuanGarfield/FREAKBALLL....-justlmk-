@@ -1,3 +1,5 @@
+import { EffectManager } from './effects.js';
+
 const canvas = document.getElementById('table');
 const ctx = canvas.getContext('2d');
 const playArea = document.getElementById('playArea');
@@ -205,6 +207,7 @@ new ball(348, 720, "yellow", "stripe", 14),
 new ball(378, 720, "yellow", "stripe", 15)
 
 ];
+export const effectManager = new EffectManager();
 
 let aiming = false;
 let powerups = []; // Array to store spawned powerups
@@ -220,6 +223,11 @@ function drawTable() {
 }
 
 function simulateProjection(ball, steps = 30) {
+  // Don't show projection in hard mode
+  if (!effectManager.shouldShowPath()) {
+    return [];
+  }
+  
   let tempX = ball.x;
   let tempY = ball.y;
   let vx = ball.vx;
@@ -231,8 +239,8 @@ function simulateProjection(ball, steps = 30) {
   for (let i = 0; i < steps; i++) {
     tempX += vx;
     tempY += vy;
-    vx *= 0.98;
-    vy *= 0.98;
+    vx *= effectManager.getFrictionFactor(); // Use dynamic friction
+    vy *= effectManager.getFrictionFactor();
 
     if (tempX < ball.radius + cushionMargin) {
       tempX = ball.radius + cushionMargin;
@@ -249,7 +257,7 @@ function simulateProjection(ball, steps = 30) {
       vy *= -1;
     }
     if (tempY > canvas.height - ball.radius - cushionMargin) {
-      tempY = canvas.height - ball.radius - cushionMargin;
+      tempY = ball.height - ball.radius - cushionMargin;
       vy *= -1;
     }
 
@@ -362,75 +370,93 @@ function draw() {
 
 
 function update() {
-    const substeps = 4; // increase this for better accuracy
-    for (let step = 0; step < substeps; step++) {
-      balls.forEach(ball => {
-        ball.x += ball.vx / substeps;
-        ball.y += ball.vy / substeps;
-        ball.vx *= 0.98 ** (1 / substeps);
-        ball.vy *= 0.98 ** (1 / substeps);
-  
-        if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
-        if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
-  
-        const r = ball.radius;
+  const substeps = 4; // increase this for better accuracy
+  for (let step = 0; step < substeps; step++) {
+    balls.forEach(ball => {
+      ball.x += ball.vx / substeps;
+      ball.y += ball.vy / substeps;
+      ball.vx *= effectManager.getFrictionFactor() ** (1 / substeps);
+      ball.vy *= effectManager.getFrictionFactor() ** (1 / substeps);
 
-        // Top cushion (skip corners where pockets are)
-        if (ball.y - r < 20 && ball.x > 60 && ball.x < 575) {
-            ball.y = 20 + r;
-            ball.vy *= -1;
-            edgeSound();
-        }
-        
-        // Bottom cushion (skip corners where pockets are)
-        if (ball.y + r > 930 && ball.x > 60 && ball.x < 575) {
-            ball.y = 930 - r;
-            ball.vy *= -1;
-            edgeSound();
-        }
-        
-        // Left top cushion
-        if (ball.x - r < 20 && ball.y > 30 && ball.y < 455) {
-            ball.x = 20 + r;
-            ball.vx *= -1;
-            edgeSound();
-        }
-        
-        // Left bottom cushion
-        if (ball.x - r < 20 && ball.y > 495 && ball.y < 925) {
-            ball.x = 20 + r;
-            ball.vx *= -1;
-            edgeSound();
-        }
-        
-        // Right top cushion
-        if (ball.x + r > 615 && ball.y > 30 && ball.y < 455) {
-            ball.x = 615 - r;
-            ball.vx *= -1;
-            edgeSound();
-        }
-        
-        // Right bottom cushion
-        if (ball.x + r > 615 && ball.y > 495 && ball.y < 925) {
-            ball.x = 615 - r;
-            ball.vx *= -1;
-            edgeSound();
-        }
-      });
-  
-      for (let i = 0; i < balls.length; i++) {
-        for (let j = i + 1; j < balls.length; j++) {
-          balls[i].collision(balls[j]);
-        }
-        
-        for (let i = 0; i < pockets.length; i++){
-            for (let j = 0; j < balls.length; j++){
-                pockets[i].pocketed(balls[j]);
-            }
-        }
+      if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
+      if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
+
+      const r = ball.radius;
+
+      // Top cushion (skip corners where pockets are)
+      if (ball.y - r < 20 && ball.x > 60 && ball.x < 575) {
+          ball.y = 20 + r;
+          ball.vy *= -1;
+          edgeSound();
+          if (effectManager.isBumperWallsActive()) {
+              effectManager.registerBumperHit(ball);
+          }
+      }
+      
+      // Bottom cushion (skip corners where pockets are)
+      if (ball.y + r > 930 && ball.x > 60 && ball.x < 575) {
+          ball.y = 930 - r;
+          ball.vy *= -1;
+          edgeSound();
+          if (effectManager.isBumperWallsActive()) {
+              effectManager.registerBumperHit(ball);
+          }
+      }
+      
+      // Left top cushion
+      if (ball.x - r < 20 && ball.y > 30 && ball.y < 455) {
+          ball.x = 20 + r;
+          ball.vx *= -1;
+          edgeSound();
+          if (effectManager.isBumperWallsActive()) {
+              effectManager.registerBumperHit(ball);
+          }
+      }
+      
+      // Left bottom cushion
+      if (ball.x - r < 20 && ball.y > 495 && ball.y < 925) {
+          ball.x = 20 + r;
+          ball.vx *= -1;
+          edgeSound();
+          if (effectManager.isBumperWallsActive()) {
+              effectManager.registerBumperHit(ball);
+          }
+      }
+      
+      // Right top cushion
+      if (ball.x + r > 615 && ball.y > 30 && ball.y < 455) {
+          ball.x = 615 - r;
+          ball.vx *= -1;
+          edgeSound();
+          if (effectManager.isBumperWallsActive()) {
+              effectManager.registerBumperHit(ball);
+          }
+      }
+      
+      // Right bottom cushion
+      if (ball.x + r > 615 && ball.y > 495 && ball.y < 925) {
+          ball.x = 615 - r;
+          ball.vx *= -1;
+          edgeSound();
+          if (effectManager.isBumperWallsActive()) {
+              effectManager.registerBumperHit(ball);
+          }
+      }
+    });
+
+    for (let i = 0; i < balls.length; i++) {
+      for (let j = i + 1; j < balls.length; j++) {
+        balls[i].collision(balls[j]);
+      }
+      
+      for (let i = 0; i < pockets.length; i++){
+          for (let j = 0; j < balls.length; j++){
+              pockets[i].pocketed(balls[j]);
+          }
       }
     }
   }
+}
   // I will blow up
 
 let hittable = true;
@@ -477,6 +503,7 @@ document.addEventListener('mousemove', (e) => {
     hittable = true;
   }
 });
+
 
 gameLoop();
 

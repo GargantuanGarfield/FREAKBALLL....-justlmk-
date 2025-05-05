@@ -1,4 +1,4 @@
-import {balls} from "./physics.js"
+import {balls, effectManager} from "./physics.js"
 import {pocketed} from "./physics.js"
 import {Player} from "./player.js"
 
@@ -49,6 +49,9 @@ function playTurn() {
         } else {
             switchPlayers();
             console.log(`Switched to Player ${currentPlayer.number}`);
+            
+            // Roll for a random effect at the start of the next player's turn
+            effectManager.rollForEffect();
         }
     }, 100); // Delay ensures pocketed[] is up-to-date
 }
