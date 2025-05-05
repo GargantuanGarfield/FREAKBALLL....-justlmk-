@@ -21,6 +21,7 @@ collisionSounds[4].volume = 0.5;
 // take this code before updating will's changes
 let edgeSounds;
 let pocketHit;
+let blackHole = false;
 
 class ball {
     constructor(x, y, color, suit, id) {
@@ -101,6 +102,22 @@ class pocket{
       balls[0].vx = 0;
       balls[0].vy = 0;
     }
+     applyGravity(ball){
+      const g = 2.5;
+      let dx = this.x - ball.x;
+      let dy = this.y - ball.y;
+      let distance = Math.sqrt(Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2));
+      if (distance < 300 && ball.suit != "cue"){
+        let forceX = (dx / distance) * g;
+        let forceY = (dy / distance) * g;
+      
+        // Apply the gravitational force to the ball's velocity
+        ball.vx += forceX / distance; 
+        ball.vy += forceY / distance;}
+      
+    
+    }
+
     pocketed(ball){
         let distance = Math.sqrt(Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2))
         if (distance < (ball.radius + this.radius)){
@@ -372,7 +389,12 @@ function update() {
   
         if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
         if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
-  
+        
+        if (blackHole){
+          balls.forEach(ball =>{
+            pockets[pockets.length-1].applyGravity(ball);
+          })
+        }
         const r = ball.radius;
 
         // Top cushion (skip corners where pockets are)
@@ -428,6 +450,7 @@ function update() {
                 pockets[i].pocketed(balls[j]);
             }
         }
+
       }
     }
   }
@@ -462,8 +485,10 @@ document.addEventListener('mousemove', (e) => {
     }
   });
  
+  let count = 0;
   document.addEventListener('mouseup', (e) => {
   if (balls[0].vx == 0 && balls[0].vy == 0){
+    count++;
     aiming = false;
     const rect = canvas.getBoundingClientRect();
     let mouseX = e.clientX - rect.left;
@@ -475,8 +500,82 @@ document.addEventListener('mousemove', (e) => {
     balls[0].vx = dx * 0.1;
     balls[0].vy = dy * 0.1;
     hittable = true;
+    if (count == 2){
+      balls.forEach(ball =>{
+        reset(ball)
+        if (pockets.length == 7){
+          count = -1;
+        } else{
+          count = 0;
+        }
+        
+      })
+      applyPowerupEffect();
+    }
   }
 });
+
+function reset(ball){
+  if (ball.suit == "solid"){
+    ball.color = "red";
+  } else if (ball.suit == "cue"){
+    ball.color = "white";
+  } else if (ball.suit == "8-ball"){
+    ball.color = "black";
+  } else{
+    ball.color = "yellow"
+  }
+
+  ball.radius = 10;
+  if (pockets.length == 7){
+    pockets.pop();
+  }
+}
+
+
+function applyPowerupEffect() {
+  const effects = [
+    () => { // Speed boost
+      balls.forEach(ball =>{
+        ball.vx *= 2;
+        ball.vy *= 2;})
+    },
+    () => {
+       // Shrink ball
+       balls.forEach(ball =>{
+        ball.vx = Math.random()*20
+        ball.vy = Math.random()*20})
+    },
+    () => { // Grow ball
+      balls[0].radius = Math.random()*50
+    },
+    () => { // Reverse velocity
+      balls.forEach(ball =>{
+      ball.vx *= -1;
+      ball.vy *= -1;})
+    },
+    () => { // Random teleport
+      balls.forEach(ball =>{
+      ball.x = Math.random() * (canvas.width - 40) + 20;
+      ball.y = Math.random() * (canvas.height - 40) + 20;})
+    },
+    () =>{
+      balls.forEach(ball =>{
+        ball.color = "purple"
+      })
+    },
+    () =>{
+      // creates a new pocket with a random location
+      pockets.push(new pocket(Math.random() * (canvas.width - 40) + 20, Math.random() * (canvas.height - 40) + 20))
+      blackHole = true;
+      console.log(blackHole)
+    }
+  ];
+  const effect = effects[Math.floor(Math.random() * effects.length)];
+  effect();
+}
+
+
 
 gameLoop();
 
