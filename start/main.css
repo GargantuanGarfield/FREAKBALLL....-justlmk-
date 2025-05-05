@@ -28,6 +28,7 @@ body {
     display: table;
     background-color: #a2d2f1;
     table-layout: fixed;
+    
 }
 
 .left-column {
@@ -50,6 +51,7 @@ body {
     position: relative;
     margin: 15px 8px;
     border-radius: 10px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.5);
 }
 
 .left-column .section {
@@ -97,6 +99,7 @@ body {
 .section-content {
     padding: 10px;
     text-align: center;
+    
 }
 
 .left-column .section-content {
@@ -115,6 +118,7 @@ body {
     margin: 10px 0;
     box-shadow: 6px 6px 12px rgba(0,0,0,0.5);
     transform: rotate(-3deg);
+    
 }
 
 .right-column .section-content img {
