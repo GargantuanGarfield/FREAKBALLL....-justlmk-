@@ -1,21 +1,18 @@
-// Random events for pool game
 import { balls } from './physics.js';
 
-// Constants for effects
 const EFFECT_DURATION = 1; // Duration in turns
-const EFFECT_CHANCE = 1.0; // 30% chance of an effect occurring
+const EFFECT_CHANCE = 0.35; // 35% chance of an effect occurring
 
-// Effect types
 export const EFFECTS = {
     GAY_MODE: 'GAY_MODE',
     BUMPER_WALLS: 'BUMPER_WALLS',
     HARD_MODE: 'HARD_MODE',
     STICKY_MODE: 'STICKY_MODE',
     BIG_BALLS: 'BIG_BALLS',
+    BOMB: 'BOMB',
     NONE: 'NONE'
 };
 
-// Class to manage game effects
 export class EffectManager {
     constructor() {
         this.currentEffect = EFFECTS.NONE;
@@ -48,7 +45,6 @@ export class EffectManager {
     
     
 
-    // Roll for a random effect at the start of a turn
     rollForEffect() {
         if (this.turnsRemaining > 0) {
             this.turnsRemaining--;
@@ -67,7 +63,6 @@ export class EffectManager {
         return false;
     }
 
-    // Activate a specific effect
     activateEffect(effectType) {
         this.endCurrentEffect(); // End any current effect first
         this.currentEffect = effectType;
@@ -89,12 +84,14 @@ export class EffectManager {
             case EFFECTS.BIG_BALLS:
                 this.activateBigBalls();
                 break;
+            case EFFECTS.BOMB:
+                this.activateBomb();
+                break;
         }
 
         this.showEffectMessage(effectType);
     }
 
-    // End the current effect and reset to normal
     endCurrentEffect() {
         switch (this.currentEffect) {
             case EFFECTS.GAY_MODE:
@@ -117,7 +114,6 @@ export class EffectManager {
         this.hideEffectMessage();
     }
 
-    // Show effect message
     showEffectMessage(effectType) {
         let imageSrc = '';
         let soundSrc;
@@ -145,11 +141,9 @@ export class EffectManager {
                 break;
         }
     
-        // Set image and show
         this.effectMessage.src = imageSrc;
         this.effectMessage.style.display = 'block';
     
-        // Trigger animation
         requestAnimationFrame(() => {
             this.effectMessage.style.opacity = '1';
             this.effectMessage.style.transform = 'translate(-50%, -50%) scale(1)';
@@ -176,21 +170,17 @@ export class EffectManager {
         this.effectMessage.style.display = 'none';
     }
 
-    // Check if path should be visible (for Hard Mode)
     shouldShowPath() {
         return this.currentEffect !== EFFECTS.HARD_MODE;
     }
 
-    // Check if walls should be bumpers
     isBumperWallsActive() {
         return this.currentEffect === EFFECTS.BUMPER_WALLS;
     }
 
-    // Track bumper hit and increase speed
     registerBumperHit(ball) {
         if (this.isBumperWallsActive() && this.bumperHits < this.maxBumperHits) {
             this.bumperHits++;
-            // Increase speed by 20%
             const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
             const angle = Math.atan2(ball.vy, ball.vx);
             const newSpeed = speed * 1.2;
@@ -203,17 +193,13 @@ export class EffectManager {
         this.bumperHits = 0;
     }
 
-    // Get current friction factor
     getFrictionFactor() {
         return this.currentEffect === EFFECTS.STICKY_MODE ? 0.94 : this.originalFriction;
     }
 
-    // GAY MODE implementation
     activateGayMode() {
-        // Save original colors
         this.originalBallColors = balls.map(ball => ({ id: ball.id, color: ball.color }));
         
-        // Rainbow colors
         const rainbowColors = [
             '#FF0000', // Red
             '#FF7F00', // Orange
@@ -224,7 +210,6 @@ export class EffectManager {
             '#9400D3'  // Violet
         ];
         
-        // Apply rainbow colors to all balls except cue ball
         balls.forEach(ball => {
             if (ball.suit !== 'cue') {
                 const colorIndex = Math.floor(Math.random() * rainbowColors.length);
@@ -234,7 +219,6 @@ export class EffectManager {
     }
 
     deactivateGayMode() {
-        // Restore original colors
         this.originalBallColors.forEach(original => {
             const ball = balls.find(b => b.id === original.id);
             if (ball) {
@@ -243,35 +227,26 @@ export class EffectManager {
         });
     }
 
-    // BUMPER WALLS implementation
     activateBumperWalls() {
         this.resetBumperHits();
-        // Actual implementation happens in the physics.js updates
     }
 
     deactivateBumperWalls() {
         this.resetBumperHits();
     }
 
-    // HARD MODE implementation
     activateHardMode() {
-        // Implemented via shouldShowPath method
     }
 
     deactivateHardMode() {
-        // Nothing needed here
     }
 
-    // STICKY MODE implementation
     activateStickyMode() {
-        // Implemented via getFrictionFactor method
     }
 
     deactivateStickyMode() {
-        // Nothing needed here
     }
 
-    // BIG BALLS implementation
     activateBigBalls() {
         this.originalCueBallRadius = balls[0].radius;
         balls[0].radius = 170; // Make cue ball 3x larger
@@ -279,5 +254,48 @@ export class EffectManager {
 
     deactivateBigBalls() {
         balls[0].radius = this.originalCueBallRadius;
+    }
+
+    activateBomb() {
+        const bombSound = new Audio('/sounds/Blackhole.wav');
+        bombSound.play();
+    
+        const center = { x: balls[0].x, y: balls[0].y };
+
+        balls.forEach(ball => {
+            if (ball.suit !== "cue") {
+                let dx = ball.x - center.x;
+                let dy = ball.y - center.y;
+                let dist = Math.max(Math.hypot(dx, dy), 1);
+
+                // Push outward instead of inward
+                let force = 20 * (1 - dist / 300); // increase radius if needed
+                force = Math.max(force, 100); // ensure minimum push
+
+                ball.vx += (dx / dist) * force;
+                ball.vy += (dy / dist) * force;
+            }
+        });
+
+
+        const canvas = document.getElementById('table');
+        const rect = canvas.getBoundingClientRect();
+
+        const img = document.createElement('img');
+        img.src = '/imgs/explodee.gif';
+        img.style.position = 'absolute';
+        img.style.left = `${rect.left + center.x - 75}px`;
+        img.style.top = `${rect.top + center.y - 75}px`;
+        img.style.width = '150px';
+        img.style.height = '150px';
+        img.style.zIndex = 9998;
+        img.style.opacity = '0.9';
+        img.style.transition = 'opacity 0.6s ease';
+        document.body.appendChild(img);
+
+        setTimeout(() => {
+            img.style.opacity = '0';
+            setTimeout(() => img.remove(), 400);
+        }, 200);
     }
 }

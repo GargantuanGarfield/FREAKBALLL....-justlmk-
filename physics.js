@@ -370,93 +370,93 @@ function draw() {
 
 
 function update() {
-  const substeps = 4; // increase this for better accuracy
-  for (let step = 0; step < substeps; step++) {
-    balls.forEach(ball => {
-      ball.x += ball.vx / substeps;
-      ball.y += ball.vy / substeps;
-      ball.vx *= effectManager.getFrictionFactor() ** (1 / substeps);
-      ball.vy *= effectManager.getFrictionFactor() ** (1 / substeps);
+    const substeps = 4; // increase this for better accuracy
+    for (let step = 0; step < substeps; step++) {
+      balls.forEach(ball => {
+        ball.x += ball.vx / substeps;
+        ball.y += ball.vy / substeps;
+        ball.vx *= effectManager.getFrictionFactor() ** (1 / substeps);
+        ball.vy *= effectManager.getFrictionFactor() ** (1 / substeps);
+  
+        if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
+        if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
+  
+        const r = ball.radius;
 
-      if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
-      if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
-
-      const r = ball.radius;
-
-      // Top cushion (skip corners where pockets are)
-      if (ball.y - r < 20 && ball.x > 60 && ball.x < 575) {
-          ball.y = 20 + r;
-          ball.vy *= -1;
-          edgeSound();
-          if (effectManager.isBumperWallsActive()) {
-              effectManager.registerBumperHit(ball);
-          }
-      }
-      
-      // Bottom cushion (skip corners where pockets are)
-      if (ball.y + r > 930 && ball.x > 60 && ball.x < 575) {
-          ball.y = 930 - r;
-          ball.vy *= -1;
-          edgeSound();
-          if (effectManager.isBumperWallsActive()) {
-              effectManager.registerBumperHit(ball);
-          }
-      }
-      
-      // Left top cushion
-      if (ball.x - r < 20 && ball.y > 30 && ball.y < 455) {
-          ball.x = 20 + r;
-          ball.vx *= -1;
-          edgeSound();
-          if (effectManager.isBumperWallsActive()) {
-              effectManager.registerBumperHit(ball);
-          }
-      }
-      
-      // Left bottom cushion
-      if (ball.x - r < 20 && ball.y > 495 && ball.y < 925) {
-          ball.x = 20 + r;
-          ball.vx *= -1;
-          edgeSound();
-          if (effectManager.isBumperWallsActive()) {
-              effectManager.registerBumperHit(ball);
-          }
-      }
-      
-      // Right top cushion
-      if (ball.x + r > 615 && ball.y > 30 && ball.y < 455) {
-          ball.x = 615 - r;
-          ball.vx *= -1;
-          edgeSound();
-          if (effectManager.isBumperWallsActive()) {
-              effectManager.registerBumperHit(ball);
-          }
-      }
-      
-      // Right bottom cushion
-      if (ball.x + r > 615 && ball.y > 495 && ball.y < 925) {
-          ball.x = 615 - r;
-          ball.vx *= -1;
-          edgeSound();
-          if (effectManager.isBumperWallsActive()) {
-              effectManager.registerBumperHit(ball);
-          }
-      }
-    });
-
-    for (let i = 0; i < balls.length; i++) {
-      for (let j = i + 1; j < balls.length; j++) {
-        balls[i].collision(balls[j]);
-      }
-      
-      for (let i = 0; i < pockets.length; i++){
-          for (let j = 0; j < balls.length; j++){
-              pockets[i].pocketed(balls[j]);
-          }
+        // Top cushion (skip corners where pockets are)
+        if (ball.y - r < 20 && ball.x > 60 && ball.x < 575) {
+            ball.y = 20 + r;
+            ball.vy *= -1;
+            edgeSound();
+            if (effectManager.isBumperWallsActive()) {
+                effectManager.registerBumperHit(ball);
+            }
+        }
+        
+        // Bottom cushion (skip corners where pockets are)
+        if (ball.y + r > 930 && ball.x > 60 && ball.x < 575) {
+            ball.y = 930 - r;
+            ball.vy *= -1;
+            edgeSound();
+            if (effectManager.isBumperWallsActive()) {
+                effectManager.registerBumperHit(ball);
+            }
+        }
+        
+        // Left top cushion
+        if (ball.x - r < 20 && ball.y > 30 && ball.y < 455) {
+            ball.x = 20 + r;
+            ball.vx *= -1;
+            edgeSound();
+            if (effectManager.isBumperWallsActive()) {
+                effectManager.registerBumperHit(ball);
+            }
+        }
+        
+        // Left bottom cushion
+        if (ball.x - r < 20 && ball.y > 495 && ball.y < 925) {
+            ball.x = 20 + r;
+            ball.vx *= -1;
+            edgeSound();
+            if (effectManager.isBumperWallsActive()) {
+                effectManager.registerBumperHit(ball);
+            }
+        }
+        
+        // Right top cushion
+        if (ball.x + r > 615 && ball.y > 30 && ball.y < 455) {
+            ball.x = 615 - r;
+            ball.vx *= -1;
+            edgeSound();
+            if (effectManager.isBumperWallsActive()) {
+                effectManager.registerBumperHit(ball);
+            }
+        }
+        
+        // Right bottom cushion
+        if (ball.x + r > 615 && ball.y > 495 && ball.y < 925) {
+            ball.x = 615 - r;
+            ball.vx *= -1;
+            edgeSound();
+            if (effectManager.isBumperWallsActive()) {
+                effectManager.registerBumperHit(ball);
+            }
+        }
+      });
+  
+      for (let i = 0; i < balls.length; i++) {
+        for (let j = i + 1; j < balls.length; j++) {
+          balls[i].collision(balls[j]);
+        }
+        
+        for (let i = 0; i < pockets.length; i++){
+            for (let j = 0; j < balls.length; j++){
+                pockets[i].pocketed(balls[j]);
+            }
+        }
       }
     }
   }
-}
   // I will blow up
 
 let hittable = true;
