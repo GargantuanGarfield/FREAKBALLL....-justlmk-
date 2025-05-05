@@ -126,17 +126,17 @@ class pocket{
 
 let pockets = [
     // Top left
-    new pocket(0, 0),
+    new pocket(5, 5),
     // Top right
-    new pocket(635, 0),
+    new pocket(630, 5),
     // Middle left
     new pocket(0, 475),
     // middle right,
     new pocket(635, 475),
     // Bottom left
-    new pocket(0, 950),
+    new pocket(5, 945),
     // Bottom right
-    new pocket(635, 950)
+    new pocket(630, 945)
 ]
 
 class Powerup {
@@ -290,30 +290,47 @@ function draw() {
 
   if (aiming) {
     if (aiming) {
-        // Draw the pool stick shaft
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        ctx.lineTo(balls[0].x, balls[0].y);
-        ctx.lineWidth = 8; // Thicker for pool stick
-        ctx.strokeStyle = '#A0522D'; // Sienna color for wood
-        ctx.stroke();
-        ctx.closePath();
-    
-        // Draw the pool stick tip
-        ctx.beginPath();
-        const dx = balls[0].x - startX;
-        const dy = balls[0].y - startY;
-        const dist = Math.hypot(dx, dy);
-        const tipLength = 10;
-        const unitX = dx / dist;
-        const unitY = dy / dist;
-    
-        ctx.moveTo(balls[0].x, balls[0].y);
-        ctx.lineTo(balls[0].x - unitX * tipLength, balls[0].y - unitY * tipLength);
-        ctx.lineWidth = 10; // Slightly wider tip
-        ctx.strokeStyle = '#2F4F4F'; // Dark Slate Gray tip
-        ctx.stroke();
-        ctx.closePath();
+
+      const dx = startX - balls[0].x;
+      const dy = startY - balls[0].y;
+      const angle = Math.atan2(dy, dx);
+      const cueLength = 300;
+      const tipLength = 10;
+      const offset = 20; // Pull back from the ball
+      
+      // ✅ TIP: first segment (closer to cue ball)
+      ctx.beginPath();
+      ctx.moveTo(
+        balls[0].x + Math.cos(angle) * offset,
+        balls[0].y + Math.sin(angle) * offset
+      );
+      ctx.lineTo(
+        balls[0].x + Math.cos(angle) * (offset + tipLength),
+        balls[0].y + Math.sin(angle) * (offset + tipLength)
+      );
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = '#2F4F4F';
+      ctx.stroke();
+      ctx.closePath();
+      
+      // ✅ SHAFT: continues after the tip
+      ctx.beginPath();
+      ctx.moveTo(
+        balls[0].x + Math.cos(angle) * (offset + tipLength),
+        balls[0].y + Math.sin(angle) * (offset + tipLength)
+      );
+      ctx.lineTo(
+        balls[0].x + Math.cos(angle) * (cueLength + offset),
+        balls[0].y + Math.sin(angle) * (cueLength + offset)
+      );
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = '#A0522D';
+      ctx.stroke();
+      ctx.closePath();
+      
+      
+
+  
     }
     
 
@@ -356,12 +373,49 @@ function update() {
         if (Math.abs(ball.vx) < 0.1) ball.vx = 0;
         if (Math.abs(ball.vy) < 0.1) ball.vy = 0;
   
-        const cushionMargin = 15;
-        // take this code before updating will's changes
-        if (ball.x < ball.radius + cushionMargin) { ball.x = ball.radius + cushionMargin; ball.vx *= -1; edgeSound();}
-        if (ball.x > canvas.width - ball.radius - cushionMargin) { ball.x = canvas.width - ball.radius - cushionMargin; ball.vx *= -1; edgeSound();}
-        if (ball.y < ball.radius + cushionMargin) { ball.y = ball.radius + cushionMargin; ball.vy *= -1; edgeSound();}
-        if (ball.y > canvas.height - ball.radius - cushionMargin) { ball.y = canvas.height - ball.radius - cushionMargin; ball.vy *= -1; edgeSound();}
+        const r = ball.radius;
+
+        // Top cushion (skip corners where pockets are)
+        if (ball.y - r < 20 && ball.x > 60 && ball.x < 575) {
+            ball.y = 20 + r;
+            ball.vy *= -1;
+            edgeSound();
+        }
+        
+        // Bottom cushion (skip corners where pockets are)
+        if (ball.y + r > 930 && ball.x > 60 && ball.x < 575) {
+            ball.y = 930 - r;
+            ball.vy *= -1;
+            edgeSound();
+        }
+        
+        // Left top cushion
+        if (ball.x - r < 20 && ball.y > 30 && ball.y < 455) {
+            ball.x = 20 + r;
+            ball.vx *= -1;
+            edgeSound();
+        }
+        
+        // Left bottom cushion
+        if (ball.x - r < 20 && ball.y > 495 && ball.y < 925) {
+            ball.x = 20 + r;
+            ball.vx *= -1;
+            edgeSound();
+        }
+        
+        // Right top cushion
+        if (ball.x + r > 615 && ball.y > 30 && ball.y < 455) {
+            ball.x = 615 - r;
+            ball.vx *= -1;
+            edgeSound();
+        }
+        
+        // Right bottom cushion
+        if (ball.x + r > 615 && ball.y > 495 && ball.y < 925) {
+            ball.x = 615 - r;
+            ball.vx *= -1;
+            edgeSound();
+        }
       });
   
       for (let i = 0; i < balls.length; i++) {

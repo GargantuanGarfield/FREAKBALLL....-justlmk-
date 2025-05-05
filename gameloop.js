@@ -5,110 +5,121 @@ import {Player} from "./player.js"
 let REMAINING_SOLIDS = 7
 let REMAINING_STRIPES =  7
 
+let playAgain = false;
 
-let player1 = new Player(1, "bals", false, "[none]", "[none]", "[none]")
-let player2 = new Player(2, "bals", false, "[none]", "[none]", "[none]")
+let validPocket = false;
+let cueBallScratched = false;
+
+let h1 = document.getElementById("peenar1")
+let h12 = document.getElementById("peenar2")
+
+let player1 = new Player(1, "N/A", "[none]", "[none]", "[none]")
+let player2 = new Player(2, "N/A", "[none]", "[none]", "[none]")
+
+function updatePlayerHighlight(currentPlayer) {
+    const avatar1 = document.querySelector('.player1');
+    const avatar2 = document.querySelector('.player2');
+
+    avatar1.classList.remove('active-turn');
+    avatar2.classList.remove('active-turn');
+
+    if (currentPlayer.number === 1) {
+        avatar1.classList.add('active-turn');
+    } else {
+        avatar2.classList.add('active-turn');
+    }
+}
 
 document.addEventListener("STOP", playTurn)
 
-let turnNum = 0
-let playAgain = false;
+let currentPlayer = player1;
+let otherPlayer = player2;
 
-function playTurn() {
-    do {
-        turnNum++;
-        const currentPlayer = (turnNum % 2 === 0) ? player2 : player1;
-        player(currentPlayer, turnNum);
-        // playAgain should be set by `player()` or other logic
-    } while (playAgain);
+function switchPlayers() {
+    [currentPlayer, otherPlayer] = [otherPlayer, currentPlayer];
 }
 
-function player(player, turnNum){
+
+function playTurn() {
+    setTimeout(() => {
+        player(currentPlayer);
+
+        if (playAgain) {
+            console.log(`Player ${currentPlayer.number} continues...`);
+        } else {
+            switchPlayers();
+            console.log(`Switched to Player ${currentPlayer.number}`);
+        }
+    }, 100); // Delay ensures pocketed[] is up-to-date
+}
+
+
+
+
+function player(player){
     playAgain = false;
 
-    if (turnNum == 1 && pocketed.length > 0){
-        // if there one ball then assaign suit otherwi uhh then dont,, ig
-        
-        let safe = true
-        for (let ball in pocketed){
-            console.log(ball)
-            if (ball == "cue"){
-                safe = false
-            }
+    updatePlayerHighlight(player);
+
+    if (player.isSolid === "N/A" && pocketed.length > 0){
+        let safe = (pocketed.length === 1 && pocketed[0] !== "cue")
+
+        for (let ball of pocketed){
             if (ball == "stripe"){
                 REMAINING_STRIPES--
             } else if (ball == "solid"){
                 REMAINING_SOLIDS--
             }
-            for (let ball2 in pocketed){
-                if (ball != ball2){
-                    safe = false;
-                }
-            }
         }
+
         if (safe) {
-            player1.setSuit(pocketed[0]);
-            player2.isSolid = !(player.isSolid)
+            player.setSuit(pocketed[0]);
+            otherPlayer.isSolid = !(player.isSolid);
+            h1.textContent = (player1.isSolid) ? "Yellow" : "Red"
+            h12.textContent = (player2.isSolid) ? "Yellow" : "Red"
         }
-        console.log("PLAYER" + player.number + " TURN")
-    } else {
-        console.log("PLAYER" + player.number + " TURN")
-        pocketed.forEach(ball => {
-            if (ball == "8-ball" && player.finalBall){
-                //game endn sequence i guess idek breh 👅👅👅👅👅👅
-            }
-        })
+    }
 
-
-        if (player.isSolid == "bals" && pocketed.length > 0){
-            let safe = true
-            for (let ball in pocketed){
-                if (ball == "cue"){
-                    safe = false
-                }
-                if (ball == "stripe"){
-                    REMAINING_STRIPES--
-                } else if (ball == "solid"){
-                    REMAINING_SOLIDS--
-                }
-                for (let ball2 in pocketed){
-                    if (ball != ball2){
-                        safe = false;
-                    }
-                }
-            }
-            if (safe && player.number == 1) {
-                player.setSuit(pocketed[0])
-                player2.isSolid = !(player.isSolid)
-            } else if (safe) {
-                player.setSuit(pocketed[0])
-                player1.isSolid = !(player.isSolid)
-            }
-        }
-
-        pocketed.forEach(ball => {
-            if (ball == "solid"){
-                REMAINING_SOLIDS--
-            } else if (ball == "stripe"){
-                REMAINING_STRIPES--
-            }
-
-            if (ball == "cue"){
-                playAgain = false;
-            } else if (player.isSolid && ball == "stripe"){
-                playAgain = false;
-            } else if (!player.isSolid && ball == "solid"){
-                playAgain = false;
-            } else if (pocketed.length == 0){
-                playAgain == false;
+    pocketed.forEach(ball => {
+        let div = document.getElementById("win")
+        let h1 = div.querySelector("h1")
+        let video = div.querySelector("video")
+        if (ball === "8-ball") {
+            if (player.finalBall) {
+                h1.textContent = `PLAYER ${otherPlayer.number} WINS !!!! AYAYAYYAYYYYY`;
             } else {
-                playAgain = true;
+                h1.textContent = `PLAYER ${player.number} WINS !!!! AYAYAYYAYYYYY`;
             }
-        })
+            video.playbackRate = 4;
+            div.classList.remove("hidden")
+        }
+    });
 
-        
+    for (let ball of pocketed) {
+        if (ball === "solid") {
+            REMAINING_SOLIDS--;
+        } else if (ball === "stripe") {
+            REMAINING_STRIPES--;
+        }
+    }
+
+    for (let ball of pocketed) {
+        if (ball === "cue") cueBallScratched = true;
+        if (player.isSolid && ball === "solid") validPocket = true;
+        if (!player.isSolid && ball === "stripe") validPocket = true;
     }
 
 
-    pocketed.length = 0
+    // If cue ball scratched, switch turn regardless of valid pocket
+    if (cueBallScratched) {
+        playAgain = false;
+    }
+
+    if (player.isSolid){
+        player.checkFinal(REMAINING_SOLIDS);
+    } else {
+        player.checkFinal(REMAINING_STRIPES);
+    }
+
+    pocketed.length = 0;
 }

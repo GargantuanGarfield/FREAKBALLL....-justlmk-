@@ -11,6 +11,13 @@
     <script src="backgroundAudio.js" defer></script>
 </head>
 <body>
+    <div class="win hidden" id="win">
+        <div class="overlay win">
+            <h1 style="text-align: center; align-content: center;" style="opacity: 100;">Win!</h1>
+            <video src="/imgs/victory.mp4" style="-webkit-transform: scaleX(3); -moz-transform: scaleX(3);" class="win" autoplay loop></video>
+        </div>
+        <img src="/imgs/confetti.gif" draggable="false" class="win">
+    </div>
     <div class="game-container">
         <div class="table-frame"></div>
         <div class="pool-table" id="playArea">
@@ -42,6 +49,17 @@
         
     </div>
 
+    <div class="player-avatar player1">
+        <h1 style="z-index: 5; position: fixed; color: aliceblue;">PLAYER 1</h1>
+        <h1 id="peenar1" style="z-index: 5; position: fixed; text-align: left; width: inherit; color: aliceblue; margin-top: 420px;"></h1>
+        <img src="/imgs/gaysyed.png" style="width: inherit; height: inherit;" draggable="false">
+    </div>
+    <div class="player-avatar player2">
+        <h1 style="z-index: 5; position: fixed; text-align: right; width: inherit; color: blueviolet;">PLAYER 2</h1>
+        <h1 id="peenar2" style="z-index: 5; position: fixed; text-align: right; width: inherit; color: blueviolet; margin-top: 420px;"></h1>
+        <img src="/imgs/gayfreddy.png" style="width: inherit; height: inherit;" draggable="false">
+    </div>
+    
     <div class="theme-switcher">
         <button class="theme-button" id = "bar" onclick="setBodyBackground('imgs/Bar.png')">Bar</button>
         <button class="theme-button" id = "hell" onclick="setBodyBackground('imgs/Hell.gif')">Hell</button>
