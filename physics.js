@@ -12,7 +12,8 @@ const collisionSounds = [
   new Audio('/sounds/BallHit5.mp3')
 ];
 
-
+const welcome = new Audio('/sounds/welcomemark.mp3');
+const ohmygah = new Audio('/sounds/ohmygah.mp3');
 
 // take this code before updating will's changes
 collisionSounds[0].volume = 0.5;
@@ -510,6 +511,8 @@ document.addEventListener('mousemove', (e) => {
         }
         
       })
+      welcome.play();
+      ohmygah.play();
       applyPowerupEffect();
     }
   }
@@ -528,6 +531,7 @@ function reset(ball){
 
   ball.radius = 10;
   if (pockets.length == 7){
+    blackHole = false;
     pockets.pop();
   }
 }
